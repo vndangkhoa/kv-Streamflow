@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>StreamFlix - Homepage</title>
+    <meta name="description" content="StreamFlix - Premium Movie Streaming">
+    <meta name="theme-color" content="#141414">
+    <meta name="referrer" content="no-referrer">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Theme Config -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ea2a33",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#141414",
+                        "surface-dark": "#181818",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            /* IE and Edge */
+            scrollbar-width: none;
+            /* Firefox */
+        }
+
+        .hero-gradient {
+            background: linear-gradient(0deg, #141414 0%, rgba(20, 20, 20, 0.5) 50%, rgba(20, 20, 20, 0.4) 100%);
+        }
+
+        .card-hover:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease-in-out;
+            z-index: 10;
+        }
+
+        /* Loading spinner */
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #ea2a33;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Search modal styling */
+        .search-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 80px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+        }
+
+        .search-modal.active {
+            display: flex;
+        }
+    </style>
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="StreamFlix">
+    <link rel="icon" type="image/png" href="/icons/icon-512.png">
+    <link rel="apple-touch-icon" href="/icons/icon-512.png">
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-white font-display overflow-x-hidden antialiased">
+    <div class="relative flex min-h-screen flex-col">
+
+        <!-- Navigation -->
+        <header
+            class="fixed top-0 left-0 right-0 z-50 transition-colors duration-300 bg-gradient-to-b from-black/90 via-black/60 to-transparent pb-2 md:pb-10"
+            id="mainHeader">
+            <div class="px-4 md:px-12 py-2 md:py-4 flex items-center justify-between">
+                <div class="flex items-center gap-8">
+                    <!-- Logo -->
+                    <a class="flex items-center gap-2 text-primary hover:opacity-90 transition-opacity" href="/">
+                        <span class="material-symbols-outlined text-4xl text-primary"
+                            style="font-variation-settings: 'FILL' 1;">movie</span>
+                        <span class="text-2xl font-bold tracking-tighter text-white hidden sm:block">StreamFlix</span>
+                    </a>
+                    <!-- Desktop Nav Links -->
+                    <nav class="hidden md:flex items-center gap-6" id="mainNav">
+                        <a class="text-sm font-medium text-white hover:text-gray-300 transition-colors nav-link active"
+                            href="#" data-view="home">Home</a>
+                        <a class="text-sm font-medium text-gray-300 hover:text-white transition-colors nav-link"
+                            href="#" data-view="series">TV Shows</a>
+                        <a class="text-sm font-medium text-gray-300 hover:text-white transition-colors nav-link"
+                            href="#" data-view="movies">Movies</a>
+                        <a class="text-sm font-medium text-gray-300 hover:text-white transition-colors nav-link"
+                            href="#" data-view="cinema">New & Popular</a>
+                        <a class="text-sm font-medium text-gray-300 hover:text-white transition-colors nav-link"
+                            href="#" data-view="history">My List</a>
+                    </nav>
+                </div>
+                <div class="flex items-center gap-4 md:gap-6">
+                    <!-- Search (Modal Trigger) -->
+                    <button class="text-white hover:text-gray-300 transition-colors hidden sm:block"
+                        id="headerSearchBtn">
+                        <span class="material-symbols-outlined text-2xl">search</span>
+                    </button>
+                    <!-- Mobile Search Icon -->
+                    <button class="sm:hidden text-white" id="mobileSearchBtn">
+                        <span class="material-symbols-outlined">search</span>
+                    </button>
+                    <button class="text-white hover:text-gray-300 transition-colors relative">
+                        <span class="material-symbols-outlined">notifications</span>
+                        <span class="absolute top-0 right-0 h-2 w-2 bg-primary rounded-full"></span>
+                    </button>
+                    <div class="flex items-center gap-2 cursor-pointer group">
+                        <div class="h-8 w-8 rounded overflow-hidden border border-transparent group-hover:border-white transition-all bg-cover bg-center"
+                            style="background-image: url('https://wallpapers.com/images/hd/netflix-profile-pictures-1000-x-1000-qo9h82134t9nv0j0.jpg');">
+                        </div>
+                        <span
+                            class="material-symbols-outlined text-white transition-transform group-hover:rotate-180 text-sm">arrow_drop_down</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section -->
+        <div class="relative w-full h-[85vh] min-h-[600px]" id="heroContainer">
+            <!-- Hero Background Image -->
+            <div class="absolute inset-0 bg-cover bg-center bg-no-repeat" id="heroBg"
+                style="background-image: url('');">
+                <!-- Overlay Gradient -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-r from-background-dark/90 via-background-dark/40 to-transparent">
+                </div>
+                <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-transparent to-transparent">
+                </div>
+            </div>
+            <!-- Hero Content -->
+            <div class="relative h-full flex items-center px-4 md:px-12 pt-20">
+                <div class="max-w-2xl flex flex-col gap-6 animate-fade-in-up" id="heroContent">
+                    <div class="flex flex-col gap-4">
+                        <div id="heroTagContainer"
+                            class="hidden flex items-center gap-2 text-primary font-bold tracking-widest text-sm uppercase">
+                            <span class="material-symbols-outlined text-lg">local_fire_department</span>
+                            <span id="heroTag"></span>
+                        </div>
+                        <h1 class="text-5xl md:text-7xl font-black leading-tight tracking-tight text-white drop-shadow-lg"
+                            id="heroTitle">
+
+                        </h1>
+                        <p class="text-base md:text-lg text-gray-200 font-medium leading-relaxed drop-shadow-md max-w-xl line-clamp-3"
+                            id="heroDescription">
+                            Loading...
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-4 mt-2">
+                        <button
+                            class="flex items-center justify-center gap-2 bg-white text-black hover:bg-white/90 px-8 py-3 rounded-md font-bold text-lg transition-colors"
+                            id="heroPlayBtn">
+                            <span class="material-symbols-outlined fill-current"
+                                style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                            Play
+                        </button>
+                        <button
+                            class="flex items-center justify-center gap-2 bg-gray-500/40 hover:bg-gray-500/50 backdrop-blur-sm text-white px-8 py-3 rounded-md font-bold text-lg transition-colors"
+                            id="heroInfoBtn">
+                            <span class="material-symbols-outlined">info</span>
+                            More Info
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Area -->
+        <main class="relative z-10 -mt-24 md:-mt-32 pb-20 space-y-12 pl-4 md:pl-12" id="mainContent">
+            <!-- Dynamic Video Grid -->
+            <div id="videoGrid" class="flex flex-col gap-12">
+                <!-- Loading Indicator -->
+                <div class="flex items-center justify-center py-20" id="loading">
+                    <div class="flex flex-col items-center gap-4">
+                        <div class="loading-spinner"></div>
+                        <span class="text-gray-400">Loading movies...</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer - Hidden on mobile -->
+        <footer class="hidden md:block w-full bg-black/40 py-16 px-4 md:px-12 mt-auto border-t border-gray-800">
+            <div class="max-w-5xl mx-auto">
+                <div class="flex gap-4 mb-6 text-gray-400">
+                    <a class="hover:text-white" href="#"><svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z">
+                            </path>
+                        </svg></a>
+                    <a class="hover:text-white" href="#"><svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.85-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z">
+                            </path>
+                        </svg></a>
+                    <a class="hover:text-white" href="#"><svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
+                            <path
+                                d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z">
+                            </path>
+                        </svg></a>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-xs text-gray-500 mb-6">
+                    <div class="flex flex-col gap-3">
+                        <a class="hover:underline" href="#">Audio Description</a>
+                        <a class="hover:underline" href="#">Investor Relations</a>
+                        <a class="hover:underline" href="#">Legal Notices</a>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <a class="hover:underline" href="#">Help Center</a>
+                        <a class="hover:underline" href="#">Jobs</a>
+                        <a class="hover:underline" href="#">Cookie Preferences</a>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <a class="hover:underline" href="#">Gift Cards</a>
+                        <a class="hover:underline" href="#">Terms of Use</a>
+                        <a class="hover:underline" href="#">Corporate Information</a>
+                    </div>
+                    <div class="flex flex-col gap-3">
+                        <a class="hover:underline" href="#">Media Center</a>
+                        <a class="hover:underline" href="#">Privacy</a>
+                        <a class="hover:underline" href="#">Contact Us</a>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <button
+                        class="border border-gray-500 text-gray-500 px-4 py-1 text-sm hover:text-white hover:border-white transition-colors">
+                        Service Code
+                    </button>
+                </div>
+                <p class="text-[10px] text-gray-500">
+                    © 1997-2024 StreamFlix, Inc.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 z-50 bg-[#121212]/95 backdrop-blur-lg border-t border-white/5 pb-5 pt-3 px-6 md:hidden"
+        id="mobileBottomNav">
+        <div class="flex justify-between items-center max-w-lg mx-auto">
+            <button class="flex flex-col items-center gap-1 text-white cursor-pointer group nav-item active"
+                data-view="home">
+                <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">home</span>
+                <span class="text-[10px] font-medium">Home</span>
+            </button>
+            <button
+                class="flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-colors cursor-pointer group nav-item"
+                data-view="cinema">
+                <span class="material-symbols-outlined text-2xl">video_library</span>
+                <span class="text-[10px] font-medium">New & Hot</span>
+            </button>
+            <button
+                class="flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-colors cursor-pointer group nav-item"
+                data-view="mylist">
+                <span class="material-symbols-outlined text-2xl">playlist_play</span>
+                <span class="text-[10px] font-medium">My List</span>
+            </button>
+            <button
+                class="flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-colors cursor-pointer group nav-item"
+                data-view="search">
+                <span class="material-symbols-outlined text-2xl">search</span>
+                <span class="text-[10px] font-medium">Search</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="w-full max-w-3xl mx-4">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="material-symbols-outlined text-white/50 text-3xl">search</span>
+                <input type="text" id="searchInput"
+                    class="flex-1 bg-transparent border-none text-white text-2xl placeholder-white/30 focus:ring-0 focus:outline-none"
+                    placeholder="Titles, people, genres" autocomplete="off">
+                <button class="text-white/50 hover:text-white" id="closeSearch">
+                    <span class="material-symbols-outlined text-3xl">close</span>
+                </button>
+            </div>
+            <div id="searchResults" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
+
+            <div id="searchLoading" class="hidden flex-col items-center justify-center py-20">
+                <div class="loading-spinner"></div>
+                <span class="text-gray-400 mt-4">Searching...</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/history-service.js"></script>
+    <script type="module" src="/scripts/search.js"></script>
+    <script type="module" src="/scripts/category-system.js"></script>
+    <script type="module" src="/scripts/main.js"></script>
+</body>
+
+</html>

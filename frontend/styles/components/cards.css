@@ -1,0 +1,502 @@
+/* ============================================
+   KV-Stream - Video Card Components
+   PIXEL-PERFECT NETFLIX CARDS
+   ============================================ */
+
+/* ============================================
+   NETFLIX VIDEO CARD - Base Styles
+   ============================================ */
+.video-card {
+    position: relative;
+    flex: 0 0 var(--card-width-desktop);
+    width: var(--card-width-desktop);
+    aspect-ratio: var(--card-aspect-ratio);
+    cursor: pointer;
+    z-index: var(--z-card);
+    transition: z-index 0s var(--transition-card);
+    scroll-snap-align: start;
+}
+
+.video-card:hover {
+    z-index: var(--z-card-hover);
+    transition: z-index 0s 0s;
+}
+
+.video-card__container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: var(--card-radius);
+    overflow: visible;
+    background: var(--netflix-bg-card);
+    transition: transform var(--transition-card), box-shadow var(--transition-card);
+}
+
+/* ============================================
+   NETFLIX HOVER EXPANSION EFFECT
+   ============================================ */
+.video-card:hover .video-card__container {
+    transform: scale(var(--card-hover-scale));
+    box-shadow: var(--shadow-card-hover);
+    border-radius: var(--card-radius) var(--card-radius) 0 0;
+}
+
+/* First card in row: scale from left edge */
+.video-card:first-child:hover .video-card__container {
+    transform: scale(var(--card-hover-scale));
+    transform-origin: left center;
+}
+
+/* Last card in row: scale from right edge */
+.video-card:last-child:hover .video-card__container {
+    transform: scale(var(--card-hover-scale));
+    transform-origin: right center;
+}
+
+/* ============================================
+   CARD THUMBNAIL / POSTER
+   ============================================ */
+.video-card__thumbnail {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: var(--card-radius);
+    transition: border-radius var(--transition-card);
+}
+
+.video-card:hover .video-card__thumbnail {
+    border-radius: var(--card-radius) var(--card-radius) 0 0;
+}
+
+.video-card__poster {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.video-card__poster img,
+.video-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.video-card:hover .video-card__poster img,
+.video-card:hover .video-card__img {
+    transform: scale(1.05);
+}
+
+/* ============================================
+   NETFLIX INFO BAR (Appears on Hover)
+   ============================================ */
+.video-card__info {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    padding: 12px;
+    background: var(--netflix-bg-card);
+    border-radius: 0 0 var(--card-radius) var(--card-radius);
+    box-shadow: var(--shadow-dropdown);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: all var(--transition-card);
+    z-index: 51;
+}
+
+.video-card:hover .video-card__info {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+}
+
+/* ============================================
+   INFO BAR CONTROLS
+   ============================================ */
+.video-card__controls {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.video-card__controls-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Netflix Circle Buttons */
+.circle-btn {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    background: rgba(42, 42, 42, 0.6);
+    color: var(--netflix-text);
+}
+
+.circle-btn--primary {
+    background: var(--netflix-text);
+    color: var(--netflix-bg);
+    border-color: var(--netflix-text);
+}
+
+.circle-btn--primary:hover {
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.circle-btn--outline:hover {
+    border-color: var(--netflix-text);
+    background: rgba(42, 42, 42, 0.9);
+}
+
+.circle-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* More Info (Expand) Button */
+.circle-btn--expand {
+    margin-left: auto;
+}
+
+/* ============================================
+   METADATA ROW
+   ============================================ */
+.video-card__metadata {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: 6px;
+}
+
+.video-card__metadata .match {
+    color: var(--netflix-green);
+}
+
+.video-card__metadata .age,
+.video-card__metadata .hd {
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 0 4px;
+    font-size: 9px;
+    border-radius: 2px;
+}
+
+.video-card__metadata .hd {
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ============================================
+   GENRES / TAGS
+   ============================================ */
+.video-card__genres {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    font-size: var(--font-size-xs);
+    color: var(--netflix-text-secondary);
+}
+
+.video-card__genres span::after {
+    content: '•';
+    margin-left: 4px;
+    color: var(--netflix-text-muted);
+}
+
+.video-card__genres span:last-child::after {
+    content: none;
+}
+
+/* ============================================
+   VIDEO PREVIEW (Optional)
+   ============================================ */
+.video-card__video-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: var(--card-radius);
+    overflow: hidden;
+}
+
+.video-card:hover .video-card__video-wrapper {
+    opacity: 1;
+}
+
+.video-card__preview-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ============================================
+   PLAY BUTTON OVERLAY
+   ============================================ */
+.video-card__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+    border-radius: var(--card-radius);
+}
+
+.video-card:hover .video-card__overlay {
+    opacity: 1;
+}
+
+.video-card__play-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    transition: transform var(--transition-fast);
+    box-shadow: var(--shadow-card);
+}
+
+.video-card__play-btn:hover {
+    transform: scale(1.1);
+}
+
+.video-card__play-btn svg {
+    width: 20px;
+    height: 20px;
+    margin-left: 3px;
+}
+
+/* ============================================
+   PROGRESS BAR (Watch History)
+   ============================================ */
+.video-card__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    z-index: 15;
+    border-radius: 0 0 var(--card-radius) var(--card-radius);
+}
+
+.video-card__progress-fill {
+    height: 100%;
+    background: var(--netflix-red);
+}
+
+/* ============================================
+   VIDEO TAGS (Top Left Badges)
+   ============================================ */
+.video-tags {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 10;
+}
+
+.video-tag {
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-bold);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--netflix-text);
+}
+
+.video-tag--new {
+    background: var(--netflix-red);
+}
+
+.video-tag--series {
+    background: #00a8e1;
+}
+
+.video-tag--trailer {
+    background: #ff9500;
+    color: #000;
+}
+
+/* ============================================
+   QUALITY BADGE
+   ============================================ */
+.poster-badge {
+    padding: 2px 6px;
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: var(--font-weight-bold);
+    color: var(--netflix-text);
+    text-transform: uppercase;
+}
+
+/* ============================================
+   EPISODE BADGE
+   ============================================ */
+.episode-badge {
+    padding: 2px 6px;
+    background: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: var(--font-weight-semibold);
+    color: var(--netflix-green);
+}
+
+/* ============================================
+   YEAR BADGE
+   ============================================ */
+.year-badge {
+    padding: 2px 6px;
+    background: rgba(0, 0, 0, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: var(--font-weight-bold);
+    color: var(--netflix-text);
+}
+
+/* ============================================
+   RATING BADGES
+   ============================================ */
+.tomato-badge {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: var(--font-weight-bold);
+}
+
+.tomato-badge--fresh {
+    background: #e50914;
+    /* Netflix Red */
+    color: #fff;
+}
+
+.tomato-badge--rotten {
+    background: #333;
+    color: #fff;
+}
+
+.numeric-rating {
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.9);
+    color: #000;
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: var(--font-weight-black);
+}
+
+/* ============================================
+   META CONTAINERS (Positional Clusters)
+   ============================================ */
+.card-meta-bottom-right {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 10;
+}
+
+.card-meta-bottom-left {
+    position: absolute;
+    bottom: 6px;
+    left: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    z-index: 10;
+}
+
+
+
+/* ============================================
+   CARD TITLE & META
+   ============================================ */
+.video-card__title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.2;
+    margin-bottom: 4px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--netflix-text);
+}
+
+.video-card__meta {
+    font-size: var(--font-size-xs);
+    color: var(--netflix-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.video-card__duration {
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    padding: 2px 6px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 2px;
+    font-size: var(--font-size-xs);
+}
+
+.video-card__resolution {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    padding: 2px 6px;
+    background: var(--netflix-red);
+    border-radius: 2px;
+    font-size: 9px;
+    font-weight: var(--font-weight-bold);
+    color: var(--netflix-text);
+    text-transform: uppercase;
+}
+
+/* Keyboard Navigation */
+.video-card.keyboard-focused {
+    z-index: var(--z-card-hover);
+}
+
+.video-card.keyboard-focused .video-card__container {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 3px var(--netflix-red), var(--shadow-card-hover);
+}

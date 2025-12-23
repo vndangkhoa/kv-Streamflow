@@ -1,0 +1,112 @@
+/* ============================================
+   KV-Stream - Button Components
+   PIXEL-PERFECT NETFLIX BUTTONS
+   ============================================ */
+
+/* ============================================
+   BASE BUTTON
+   ============================================ */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    height: var(--btn-height);
+    padding: var(--btn-padding);
+    font-family: inherit;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    border-radius: var(--btn-radius);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    white-space: nowrap;
+}
+
+.btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ============================================
+   NETFLIX PRIMARY (White)
+   ============================================ */
+.btn--primary {
+    background: var(--netflix-text);
+    color: var(--netflix-bg);
+}
+
+.btn--primary:hover {
+    background: rgba(255, 255, 255, 0.85);
+}
+
+/* ============================================
+   NETFLIX SECONDARY (Gray)
+   ============================================ */
+.btn--secondary {
+    background: rgba(109, 109, 110, 0.7);
+    color: var(--netflix-text);
+}
+
+.btn--secondary:hover {
+    background: rgba(109, 109, 110, 0.5);
+}
+
+/* ============================================
+   NETFLIX RED
+   ============================================ */
+.btn--red {
+    background: var(--netflix-red);
+    color: var(--netflix-text);
+}
+
+.btn--red:hover {
+    background: var(--netflix-red-hover);
+}
+
+/* ============================================
+   GHOST (Outline)
+   ============================================ */
+.btn--ghost {
+    background: transparent;
+    color: var(--netflix-text);
+    border: 1px solid var(--netflix-text-muted);
+}
+
+.btn--ghost:hover {
+    border-color: var(--netflix-text);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   ICON BUTTON (Circle)
+   ============================================ */
+.btn--icon {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
+    background: rgba(42, 42, 42, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    color: var(--netflix-text);
+}
+
+.btn--icon:hover {
+    background: rgba(42, 42, 42, 0.9);
+    border-color: var(--netflix-text);
+    transform: scale(1.1);
+}
+
+/* ============================================
+   SMALL VARIANT
+   ============================================ */
+.btn--sm {
+    height: var(--btn-height-sm);
+    padding: 0 16px;
+    font-size: var(--font-size-sm);
+}
+
+.btn--sm svg {
+    width: 16px;
+    height: 16px;
+}

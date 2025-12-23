@@ -1,0 +1,266 @@
+/* ============================================
+   KV-Stream - Layout Styles
+   PIXEL-PERFECT NETFLIX LAYOUT
+   ============================================ */
+
+/* ============================================
+   NETFLIX TOP HEADER
+   ============================================ */
+.netflix-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--header-height);
+    background: var(--netflix-bg-header);
+    z-index: var(--z-header);
+    display: flex;
+    align-items: center;
+    padding: 0 var(--row-padding);
+    transition: background 0.4s ease;
+}
+
+.netflix-header.scrolled {
+    background: var(--netflix-bg-header-scrolled);
+    box-shadow: var(--shadow-header);
+}
+
+.netflix-header__logo {
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+}
+
+.netflix-header__logo svg,
+.netflix-header__logo img {
+    height: 28px;
+    width: auto;
+}
+
+.netflix-header__nav {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+}
+
+.netflix-header__nav-link {
+    color: var(--netflix-text-secondary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-regular);
+    transition: color var(--transition-fast);
+    white-space: nowrap;
+    text-decoration: none;
+}
+
+.netflix-header__nav-link:hover {
+    color: var(--netflix-text-muted);
+}
+
+.netflix-header__nav-link.active {
+    color: var(--netflix-text);
+    font-weight: var(--font-weight-bold);
+}
+
+.netflix-header__right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left: auto;
+}
+
+.netflix-header__search {
+    background: none;
+    border: none;
+    color: var(--netflix-text);
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.netflix-header__search svg {
+    width: 24px;
+    height: 24px;
+}
+
+.netflix-header__profile {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color var(--transition-fast);
+    border: 1px solid transparent;
+}
+
+.netflix-header__profile:hover {
+    border-color: var(--netflix-text);
+}
+
+.netflix-header__profile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ============================================
+   LEGACY SIDEBAR (Hidden on Desktop with Header)
+   ============================================ */
+.sidebar {
+    display: none;
+}
+
+/* ============================================
+   MAIN CONTENT AREA
+   ============================================ */
+.app-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--netflix-bg);
+}
+
+.main-content {
+    flex: 1;
+    padding-top: var(--header-height);
+    background: var(--netflix-bg);
+    min-height: 100vh;
+}
+
+.main {
+    padding: 0;
+    max-width: 100%;
+}
+
+/* ============================================
+   NETFLIX ROW SECTIONS
+   ============================================ */
+.netflix-row-section {
+    position: relative;
+    margin: var(--row-margin) 0;
+    z-index: var(--z-row);
+}
+
+.netflix-row-section:hover {
+    z-index: calc(var(--z-row) + 1);
+}
+
+.netflix-row-title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    color: var(--netflix-text-secondary);
+    margin: 0 0 12px var(--row-padding);
+    transition: color var(--transition-fast);
+}
+
+.netflix-row-section:hover .netflix-row-title {
+    color: var(--netflix-text);
+}
+
+/* ============================================
+   VIEW TABS
+   ============================================ */
+.view-tabs {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 0 var(--row-padding);
+}
+
+.view-tab {
+    background: transparent;
+    border: 1px solid var(--netflix-text-muted);
+    color: var(--netflix-text-secondary);
+    padding: 8px 20px;
+    border-radius: var(--btn-radius);
+    font-family: inherit;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.view-tab:hover {
+    border-color: var(--netflix-text);
+    color: var(--netflix-text);
+}
+
+.view-tab.active {
+    background: var(--netflix-text);
+    color: var(--netflix-bg);
+    border-color: var(--netflix-text);
+}
+
+/* ============================================
+   FLOATING SEARCH BUTTON
+   ============================================ */
+.floating-search-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    background: var(--netflix-red);
+    border: none;
+    border-radius: 50%;
+    color: var(--netflix-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: calc(var(--z-header) + 1);
+    box-shadow: var(--shadow-card);
+    transition: all var(--transition-base);
+}
+
+.floating-search-btn:hover {
+    transform: scale(1.1);
+    background: var(--netflix-red-hover);
+}
+
+.floating-search-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* ============================================
+   BACK TO TOP BUTTON
+   ============================================ */
+.back-to-top {
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    background: var(--netflix-bg-card);
+    border: 1px solid var(--netflix-border);
+    border-radius: 50%;
+    color: var(--netflix-text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all var(--transition-base);
+    z-index: 99;
+}
+
+.back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.back-to-top:hover {
+    background: var(--netflix-red);
+    border-color: var(--netflix-red);
+}
+
+.back-to-top svg {
+    width: 24px;
+    height: 24px;
+}

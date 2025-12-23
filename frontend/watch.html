@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>StreamFlix - Movie Details</title>
+    <meta name="description" content="StreamFlix - Watch Movies Online">
+    <meta name="theme-color" content="#141414">
+    <meta name="referrer" content="no-referrer">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Spline+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <!-- Theme Config -->
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#ea2a33",
+                        "background-light": "#f8f6f6",
+                        "background-dark": "#141414",
+                        "surface-dark": "#181818",
+                    },
+                    fontFamily: {
+                        "display": ["Spline Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #141414;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Loading spinner */
+        .loading-spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #ea2a33;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="StreamFlix">
+    <link rel="icon" type="image/png" href="/icons/icon-512.png">
+    <link rel="apple-touch-icon" href="/icons/icon-512.png">
+</head>
+
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-x-hidden">
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 transition-all duration-300 bg-gradient-to-b from-black/80 to-transparent pointer-events-none"
+        id="watchHeader">
+        <div class="px-4 md:px-12 py-4 pt-6 flex items-center justify-between">
+            <!-- Back / Close Button -->
+            <button
+                class="pointer-events-auto text-white flex items-center justify-center p-2 rounded-full hover:bg-white/10 transition-colors"
+                id="watchBackBtn">
+                <span class="material-symbols-outlined text-3xl shadow-md">arrow_back</span>
+            </button>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-4 pointer-events-auto">
+                <button
+                    class="text-white flex items-center justify-center p-2 rounded-full hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined text-2xl">cast</span>
+                </button>
+                <button
+                    class="text-white flex items-center justify-center p-2 rounded-full hover:bg-white/10 transition-colors"
+                    id="searchBtn">
+                    <span class="material-symbols-outlined text-2xl">search</span>
+                </button>
+                <!-- Desktop Profile (Hidden on mobile) -->
+                <div class="hidden md:block size-8 rounded-md bg-cover bg-center cursor-pointer border border-white/20 hover:border-white/60 transition-all"
+                    style="background-image: url('https://wallpapers.com/images/hd/netflix-profile-pictures-1000-x-1000-qo9h82134t9nv0j0.jpg');">
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section (Movie Background) -->
+    <div class="relative w-full aspect-[4/5] md:aspect-auto md:h-[85vh] md:min-h-[600px] overflow-hidden group/hero"
+        id="heroSection">
+        <!-- Hero Background -->
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat transition-transform duration-[10s] ease-out group-hover/hero:scale-105"
+            id="heroBg" style="background-image: url('');"></div>
+
+        <!-- Gradients -->
+        <div class="absolute inset-0 bg-gradient-to-t from-background-dark via-background-dark/40 to-transparent"></div>
+        <div
+            class="absolute inset-0 bg-gradient-to-r from-background-dark/90 via-background-dark/30 to-transparent hidden md:block">
+        </div>
+
+        <!-- Play Button (Centered Mobile) -->
+        <div class="absolute inset-0 flex items-center justify-center pointer-events-none md:hidden z-20">
+            <div class="size-16 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center pointer-events-auto cursor-pointer hover:scale-105 transition-transform border border-white/30"
+                id="mobilePlayBtn">
+                <span class="material-symbols-outlined text-white text-4xl fill-1"
+                    style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+            </div>
+        </div>
+
+        <!-- Hero Content (Desktop) -->
+        <div
+            class="absolute bottom-0 left-0 w-full px-4 md:px-12 pb-12 md:pb-20 z-10 flex flex-col justify-end h-full hidden md:flex">
+            <div class="max-w-2xl">
+                <!-- Movie Title -->
+                <h1 class="text-5xl md:text-7xl font-black text-white tracking-tight leading-[0.9] mb-4 drop-shadow-lg"
+                    id="movieTitleDesktop">Loading...</h1>
+                <!-- Meta Data -->
+                <div class="flex items-center flex-wrap gap-4 text-white/90 text-sm md:text-base font-medium mb-6">
+                    <span class="text-[#46d369] font-bold" id="movieMatchDesktop">98% Match</span>
+                    <span class="text-gray-300" id="movieYearDesktop">2024</span>
+                    <span class="border border-white/40 px-1.5 py-0.5 text-xs rounded text-gray-300"
+                        id="movieRatingDesktop">PG-13</span>
+                    <span class="flex items-center gap-1 text-gray-300"><span
+                            class="material-symbols-outlined text-sm">hd</span> <span
+                            id="movieQualityDesktop">HD</span></span>
+                </div>
+                <!-- Synopsis -->
+                <p class="text-white/80 text-lg md:text-xl leading-relaxed font-medium mb-8 drop-shadow-md line-clamp-3"
+                    id="movieDescriptionDesktop">Loading description...</p>
+                <!-- Actions -->
+                <div class="flex items-center gap-4">
+                    <button
+                        class="flex items-center gap-2 bg-white text-black px-8 py-3 rounded hover:bg-white/90 transition-colors font-bold text-lg min-w-[140px] justify-center"
+                        id="playBtnDesktop">
+                        <span class="material-symbols-outlined text-3xl"
+                            style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                        Play
+                    </button>
+                    <button
+                        class="flex items-center gap-2 bg-gray-500/40 hover:bg-gray-500/50 backdrop-blur-sm text-white px-6 py-3 rounded transition-colors font-bold text-lg min-w-[160px] justify-center"
+                        id="addListBtnDesktop">
+                        <span class="material-symbols-outlined text-2xl">add</span>
+                        <span>My List</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Content (Title, Meta, Actions) -->
+    <div class="relative px-5 -mt-20 z-10 flex flex-col gap-5 md:hidden text-white">
+        <!-- Title and Badges -->
+        <div class="flex flex-col gap-2">
+            <div class="flex items-center gap-2 mb-1">
+                <span class="material-symbols-outlined text-primary text-2xl"
+                    style="font-variation-settings: 'FILL' 1;">movie</span>
+                <span class="text-xs font-bold tracking-[0.2em] text-gray-300 uppercase">Series</span>
+            </div>
+            <h1 class="text-4xl font-bold tracking-tight text-white leading-none" id="movieTitleMobile">Loading...</h1>
+            <!-- Metadata Row -->
+            <div class="flex items-center flex-wrap gap-x-3 gap-y-2 mt-1 text-sm text-gray-300 font-medium">
+                <span class="text-[#46d369] font-bold" id="movieMatchMobile">98% Match</span>
+                <span id="movieYearMobile">2024</span>
+                <span class="bg-gray-700/60 px-1.5 py-0.5 rounded text-xs border border-gray-600"
+                    id="movieRatingMobile">TV-MA</span>
+                <span id="movieDurationMobile">2h 30m</span>
+                <span
+                    class="border border-gray-500 rounded px-1 text-[10px] font-bold h-4 flex items-center leading-none"
+                    id="movieQualityMobile">HD</span>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col gap-3 mt-2">
+            <button
+                class="flex items-center justify-center gap-2 w-full bg-primary hover:bg-red-700 text-white font-bold py-3 px-4 rounded transition-colors active:scale-[0.98]"
+                id="playBtnMobile">
+                <span class="material-symbols-outlined fill-1"
+                    style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                <span>Resume</span>
+            </button>
+            <div class="flex items-center gap-3 w-full">
+                <button
+                    class="flex items-center justify-center gap-2 flex-1 bg-[#2b2b2b] hover:bg-[#383838] text-white font-semibold py-3 px-4 rounded transition-colors active:scale-[0.98]"
+                    id="addListBtnMobile">
+                    <span class="material-symbols-outlined">add</span>
+                    <span>My List</span>
+                </button>
+                <button
+                    class="flex flex-none items-center justify-center w-12 h-12 bg-[#2b2b2b] hover:bg-[#383838] text-white rounded transition-colors active:scale-[0.98]"
+                    id="shareBtnMobile">
+                    <span class="material-symbols-outlined">share</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Synopsis -->
+        <div class="mb-4">
+            <p class="text-sm text-gray-300 leading-relaxed line-clamp-3" id="movieDescriptionMobile">Loading...</p>
+        </div>
+
+
+    </div>
+
+    <!-- Video Player (Hidden by default, shown when playing) -->
+    <div class="fixed inset-0 z-[100] bg-black hidden" id="videoPlayerContainer">
+        <button class="absolute top-4 right-4 z-10 text-white hover:text-gray-300" id="closePlayer">
+            <span class="material-symbols-outlined text-3xl">close</span>
+        </button>
+        <div class="w-full h-full" id="videoPlayer">
+            <div class="w-full h-full flex items-center justify-center" id="playerLoading">
+                <div class="flex flex-col items-center gap-4">
+                    <div class="loading-spinner"></div>
+                    <span class="text-gray-400">Loading stream...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container (Removed negative margin on mobile to prevent overlap) -->
+    <div class="relative z-20 md:-mt-10 px-4 md:px-12 pb-20" id="mainContent">
+        <!-- Details Layout (Column) -->
+        <div class="flex flex-col gap-12">
+            <!-- Top Section: Details & Episodes (Full Width) -->
+            <div class="space-y-10 w-full">
+                <!-- Stats & Tags -->
+                <div class="flex flex-wrap gap-x-8 gap-y-4 text-sm text-gray-400 border-t border-white/10 pt-6"
+                    id="movieTags">
+                    <!-- Genre tags will be injected here -->
+                </div>
+
+                <!-- Tab Navigation -->
+                <div class="flex items-center gap-8 border-b border-white/10" id="tabNav">
+                    <button class="text-lg font-bold text-white border-b-4 border-primary pb-3 tab-btn active"
+                        data-tab="episodes">Episodes</button>
+                    <button class="text-lg font-medium text-gray-400 pb-3 hover:text-white transition-colors tab-btn"
+                        data-tab="details">Details</button>
+                </div>
+
+                <!-- Episodes Panel -->
+                <div class="tab-panel" id="episodesPanel">
+                    <!-- Season Select -->
+                    <div class="flex items-center gap-4 mb-6" id="seasonSelectContainer">
+                        <select
+                            class="bg-surface-dark border border-white/20 text-white px-4 py-2 rounded text-sm focus:border-primary focus:ring-0"
+                            id="seasonSelect">
+                            <option value="1">Season 1</option>
+                        </select>
+                        <span class="text-gray-400 text-sm" id="episodeCount">Episodes</span>
+                    </div>
+                    <!-- Episode Grid -->
+                    <div class="space-y-4" id="episodesGrid">
+                        <!-- Episode cards will be injected here -->
+                        <div class="text-gray-400 text-center py-8" id="episodesLoading">
+                            <div class="loading-spinner mx-auto mb-4"></div>
+                            Loading episodes...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trailers Panel -->
+                <div class="tab-panel hidden" id="trailersPanel">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="trailersGrid">
+                        <!-- Trailers will be injected here -->
+                        <p class="text-gray-400 col-span-full text-center py-8">No trailers available</p>
+                    </div>
+                </div>
+
+                <!-- Details Panel -->
+                <div class="tab-panel hidden" id="detailsPanel">
+                    <!-- Cast Carousel -->
+                    <div class="space-y-4 mb-8">
+                        <h3 class="text-xl font-bold text-white">Top Cast</h3>
+                        <div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar snap-x" id="castCarousel">
+                            <!-- Cast will be injected here -->
+                        </div>
+                    </div>
+                    <!-- Additional Details -->
+                    <div class="bg-surface-dark p-6 rounded-xl border border-white/5" id="additionalDetails">
+                        <h3 class="text-xl font-bold text-white mb-4">About this movie</h3>
+                        <div class="space-y-3 text-gray-400" id="detailsList">
+                            <!-- Details will be injected here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Section: More Like This (Smaller Cards) -->
+            <div class="space-y-6 pt-8 border-t border-white/10">
+                <!-- Recommendations Section -->
+                <div class="space-y-8" id="recommendationsContainer">
+                    <!-- Dynamic sections will be injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="fixed bottom-0 left-0 right-0 z-50 bg-[#121212]/95 backdrop-blur-lg border-t border-white/5 pb-5 pt-3 px-6 md:hidden"
+        id="mobileBottomNav">
+        <div class="flex justify-between items-center max-w-lg mx-auto">
+            <button class="flex flex-col items-center gap-1 text-white cursor-pointer group nav-item" data-view="home">
+                <span class="material-symbols-outlined text-2xl">home</span>
+                <span class="text-[10px] font-medium">Home</span>
+            </button>
+            <button
+                class="flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-colors cursor-pointer group nav-item"
+                data-view="cinema">
+                <span class="material-symbols-outlined text-2xl">video_library</span>
+                <span class="text-[10px] font-medium">New & Hot</span>
+            </button>
+            <button
+                class="flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-colors cursor-pointer group nav-item"
+                data-view="mylist">
+                <span class="material-symbols-outlined text-2xl">playlist_play</span>
+                <span class="text-[10px] font-medium">My List</span>
+            </button>
+            <button
+                class="flex flex-col items-center gap-1 text-gray-400 hover:text-white transition-colors cursor-pointer group nav-item"
+                data-view="search">
+                <span class="material-symbols-outlined text-2xl">search</span>
+                <span class="text-[10px] font-medium">Search</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Search Modal -->
+    <div class="fixed inset-0 z-[150] bg-black/90 backdrop-blur-sm hidden" id="searchModal">
+        <div class="w-full max-w-3xl mx-auto px-4 pt-20">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="material-symbols-outlined text-white/50 text-3xl">search</span>
+                <input type="text" id="searchInput"
+                    class="flex-1 bg-transparent border-none text-white text-2xl placeholder-white/30 focus:ring-0 focus:outline-none"
+                    placeholder="Titles, people, genres" autocomplete="off">
+                <button class="text-white/50 hover:text-white" id="closeSearch">
+                    <span class="material-symbols-outlined text-3xl">close</span>
+                </button>
+            </div>
+            <div id="searchResults" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                <!-- Search results will be injected here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="fixed bottom-4 right-4 z-[200] flex flex-col gap-2" id="toastContainer"></div>
+
+    <!-- Video Player Dependencies -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hls.js/1.5.7/hls.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/artplayer/5.3.0/artplayer.js"></script>
+
+    <!-- App Scripts -->
+    <script src="/js/history-service.js"></script>
+    <script type="module" src="/scripts/search.js"></script>
+    <script type="module" src="/scripts/watch.js"></script>
+</body>
+
+</html>

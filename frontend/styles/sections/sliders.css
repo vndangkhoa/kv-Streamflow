@@ -1,0 +1,305 @@
+/* ============================================
+   KV-Stream - Content Sliders
+   PIXEL-PERFECT NETFLIX HORIZONTAL ROWS
+   ============================================ */
+
+/* ============================================
+   NETFLIX ROW CONTAINER
+   ============================================ */
+.slider-section {
+    position: relative;
+    margin: var(--row-margin) 0;
+    z-index: var(--z-row);
+}
+
+.slider-section:hover {
+    z-index: calc(var(--z-row) + 5);
+}
+
+.slider-section__title {
+    font-family: var(--font-heading);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-medium);
+    color: var(--netflix-text-secondary);
+    margin: 0 0 12px var(--row-padding);
+    transition: color var(--transition-fast);
+    display: flex;
+    align-items: center;
+}
+
+.slider-section:hover .slider-section__title {
+    color: var(--netflix-text);
+}
+
+/* "Explore All" Link After Title */
+.slider-section__title::after {
+    content: 'Explore All ›';
+    font-size: var(--font-size-xs);
+    color: var(--netflix-red);
+    margin-left: 12px;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: all var(--transition-base);
+}
+
+.slider-section:hover .slider-section__title::after {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.slider-container {
+    position: relative;
+}
+
+/* ============================================
+   NETFLIX HORIZONTAL SCROLL TRACK
+   ============================================ */
+.slider-track {
+    display: flex;
+    gap: var(--card-gap);
+    padding: 0 var(--row-padding);
+    padding-bottom: 40px;
+    /* Space for hover expansion */
+    margin-bottom: -40px;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.slider-track::-webkit-scrollbar {
+    display: none;
+}
+
+/* ============================================
+   NETFLIX SCROLL BUTTONS
+   ============================================ */
+.slider-btn {
+    position: absolute;
+    top: 0;
+    bottom: 40px;
+    width: 55px;
+    background: rgba(20, 20, 20, 0.5);
+    border: none;
+    color: var(--netflix-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 30;
+    opacity: 0;
+    transition: all var(--transition-base);
+}
+
+.slider-container:hover .slider-btn {
+    opacity: 1;
+}
+
+.slider-btn:hover {
+    background: rgba(20, 20, 20, 0.9);
+}
+
+.slider-btn svg {
+    width: 40px;
+    height: 40px;
+    transition: transform var(--transition-fast);
+}
+
+.slider-btn:hover svg {
+    transform: scale(1.25);
+}
+
+.slider-btn--left {
+    left: 0;
+    border-radius: 0 var(--card-radius) var(--card-radius) 0;
+}
+
+.slider-btn--right {
+    right: 0;
+    border-radius: var(--card-radius) 0 0 var(--card-radius);
+}
+
+/* ============================================
+   SECTION HEADER
+   ============================================ */
+.section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    padding: 0 var(--row-padding);
+}
+
+.section-title {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--netflix-text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-title::before {
+    content: '';
+    width: 4px;
+    height: 20px;
+    background: var(--netflix-red);
+    border-radius: 2px;
+}
+
+.section-link {
+    font-size: var(--font-size-sm);
+    color: var(--netflix-text-secondary);
+    transition: color var(--transition-fast);
+    text-decoration: none;
+}
+
+.section-link:hover {
+    color: var(--netflix-text);
+}
+
+/* ============================================
+   VIDEO GRID (For Search/Categories)
+   ============================================ */
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--card-width-desktop), 1fr));
+    gap: var(--card-gap);
+    padding: 0 var(--row-padding);
+}
+
+/* ============================================
+   INTEREST CARDS (Quick Category Filters)
+   ============================================ */
+.interest-section {
+    padding: 24px var(--row-padding);
+}
+
+.interest-cards {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.interest-cards::-webkit-scrollbar {
+    display: none;
+}
+
+.interest-card {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: 1px solid var(--netflix-border);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--netflix-text);
+    cursor: pointer;
+    transition: all var(--transition-base);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+}
+
+.interest-card:hover {
+    background: var(--netflix-text);
+    color: var(--netflix-bg);
+    border-color: var(--netflix-text);
+}
+
+.interest-card__icon {
+    font-size: 18px;
+}
+
+/* ============================================
+   NETFLIX TOP 10 SECTION
+   ============================================ */
+.top10-section {
+    margin: var(--row-margin) 0;
+    position: relative;
+}
+
+.top10-track {
+    display: flex;
+    gap: 12px;
+    padding: 0 var(--row-padding);
+    padding-bottom: 40px;
+    margin-bottom: -40px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.top10-track::-webkit-scrollbar {
+    display: none;
+}
+
+.top10-item {
+    position: relative;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: flex-end;
+}
+
+.top10-number {
+    font-size: 120px;
+    font-weight: 900;
+    line-height: 0.8;
+    color: var(--netflix-bg);
+    -webkit-text-stroke: 3px var(--netflix-text-muted);
+    margin-right: -30px;
+    z-index: 0;
+    user-select: none;
+}
+
+.top10-item .video-card {
+    z-index: 1;
+}
+
+/* ============================================
+   SECTION TITLE STYLES
+   ============================================ */
+.section-title-apple {
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--netflix-text);
+    margin-bottom: 16px;
+    padding-left: var(--row-padding);
+}
+
+.section-more {
+    color: var(--netflix-text-secondary);
+    text-decoration: none;
+    font-size: var(--font-size-sm);
+    transition: color var(--transition-fast);
+}
+
+.section-more:hover {
+    color: var(--netflix-text);
+}
+
+.movie-section {
+    padding: 0 var(--row-padding) 24px;
+}
+
+.movie-row {
+    display: flex;
+    gap: var(--card-gap);
+    overflow-x: auto;
+    padding: 16px var(--row-padding);
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.movie-row::-webkit-scrollbar {
+    display: none;
+}
+
+.movie-row .video-card {
+    flex: 0 0 auto;
+    width: var(--card-width-desktop);
+}

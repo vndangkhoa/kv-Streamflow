@@ -1,0 +1,513 @@
+/* ============================================
+   KV-Stream - Responsive Styles
+   PIXEL-PERFECT NETFLIX RESPONSIVENESS
+   ============================================ */
+
+/* ============================================
+   DESKTOP LARGE (1400px+)
+   ============================================ */
+@media (min-width: 1400px) {
+    :root {
+        --card-width-desktop: 220px;
+    }
+
+    .video-card {
+        flex: 0 0 var(--card-width-desktop);
+        width: var(--card-width-desktop);
+    }
+}
+
+/* ============================================
+   DESKTOP (1200px - 1400px)
+   ============================================ */
+@media (min-width: 1200px) and (max-width: 1399px) {
+    :root {
+        --card-width-desktop: 200px;
+    }
+}
+
+/* ============================================
+   LAPTOP (1024px - 1199px)
+   ============================================ */
+@media (min-width: 1024px) and (max-width: 1199px) {
+    :root {
+        --card-width-desktop: 180px;
+        --card-hover-scale: 1.25;
+    }
+
+    .hero__content {
+        max-width: 50%;
+    }
+}
+
+/* ============================================
+   TABLET (768px - 1023px)
+   ============================================ */
+@media (min-width: 768px) and (max-width: 1023px) {
+    :root {
+        --card-width-desktop: 160px;
+        --header-height: 56px;
+        --card-hover-scale: 1.2;
+    }
+
+    .hero {
+        height: 70vh;
+    }
+
+    .hero__content {
+        max-width: 60%;
+        bottom: 25%;
+    }
+
+    .hero__title {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+    }
+
+    .hero__description {
+        -webkit-line-clamp: 2;
+    }
+
+    .netflix-header__nav {
+        display: none;
+    }
+
+    .hero__poster-float {
+        display: none !important;
+    }
+
+    .slider-btn {
+        width: 45px;
+    }
+}
+
+/* ============================================
+   MOBILE (max-width: 767px)
+   ============================================ */
+@media (max-width: 767px) {
+    :root {
+        --card-width-desktop: 110px;
+        --card-gap: 6px;
+        --row-padding: 3%;
+        --row-margin: 20px;
+        --header-height: 48px;
+        --card-hover-scale: 1;
+    }
+
+    /* ============================================
+       MOBILE LAYOUT
+       ============================================ */
+    .app-layout {
+        padding-bottom: var(--mobile-nav-height);
+    }
+
+    .main-content {
+        padding-top: 0;
+        margin-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom));
+    }
+
+    /* ============================================
+       NETFLIX MOBILE HEADER
+       ============================================ */
+    .netflix-header {
+        height: var(--header-height);
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.8) 0%, transparent 100%);
+    }
+
+    .netflix-header.scrolled {
+        background: rgba(20, 20, 20, 0.98);
+    }
+
+    .netflix-header__logo svg,
+    .netflix-header__logo img {
+        height: 22px;
+    }
+
+    .netflix-header__nav {
+        display: none;
+    }
+
+    .netflix-header__right {
+        gap: 12px;
+    }
+
+    /* Hide floating search on mobile (use header) */
+    .floating-search-btn {
+        display: none;
+    }
+
+    /* ============================================
+       MOBILE SIDEBAR → BOTTOM NAV
+       ============================================ */
+    .sidebar {
+        display: flex !important;
+        position: fixed;
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: var(--mobile-nav-height);
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0 8px;
+        padding-bottom: env(safe-area-inset-bottom);
+        background: #121212;
+        border-top: 1px solid rgba(51, 51, 51, 0.8);
+        border-right: none;
+        z-index: var(--z-mobile-nav);
+    }
+
+    .sidebar__logo {
+        display: none;
+    }
+
+    .sidebar__nav {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        justify-content: space-around;
+        align-items: center;
+        gap: 0;
+    }
+
+    .sidebar__nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2px;
+        width: auto;
+        height: auto;
+        padding: 6px 12px;
+        border-radius: 0;
+        color: var(--netflix-text-muted);
+    }
+
+    .sidebar__nav-item svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .sidebar__nav-item.active {
+        color: var(--netflix-text);
+        background: transparent;
+    }
+
+    .sidebar__nav-item.active::before {
+        display: none;
+    }
+
+    .sidebar__profile {
+        display: none;
+    }
+
+    /* ============================================
+       MOBILE HERO
+       ============================================ */
+    .hero {
+        height: 75vh;
+        min-height: 450px;
+        margin-bottom: -60px;
+    }
+
+    .hero__gradient-overlay {
+        background:
+            linear-gradient(to top, #141414 0%, rgba(20, 20, 20, 0.6) 30%, transparent 60%);
+    }
+
+    .hero__content {
+        max-width: 100%;
+        bottom: 15%;
+        left: var(--row-padding);
+        right: var(--row-padding);
+        text-align: center;
+        align-items: center;
+    }
+
+    .hero__title {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+        text-align: center;
+    }
+
+    .hero__description {
+        font-size: var(--font-size-base);
+        -webkit-line-clamp: 2;
+        text-align: center;
+    }
+
+    .hero__metadata {
+        justify-content: center;
+    }
+
+    .hero__actions {
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .hero__btn {
+        flex: 1;
+        max-width: 160px;
+        padding: 10px 16px;
+        font-size: var(--font-size-base);
+    }
+
+    .hero__btn svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .hero-controls {
+        bottom: 10%;
+        right: 50%;
+        transform: translateX(50%);
+    }
+
+    .hero-arrow {
+        display: none;
+    }
+
+    .hero__poster-float {
+        display: none !important;
+    }
+
+    /* ============================================
+       MOBILE CARDS - NO HOVER EXPANSION
+       ============================================ */
+    .video-card {
+        flex: 0 0 var(--card-width-desktop);
+        width: var(--card-width-desktop);
+    }
+
+    .video-card:hover .video-card__container,
+    .video-card:focus .video-card__container {
+        transform: none;
+        box-shadow: none;
+        border-radius: var(--card-radius);
+    }
+
+    .video-card__info {
+        display: none !important;
+    }
+
+    .video-card__overlay {
+        opacity: 0 !important;
+    }
+
+    .video-card__play-btn {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* ============================================
+       MOBILE SLIDERS
+       ============================================ */
+    .slider-section {
+        margin: var(--row-margin) 0;
+    }
+
+    .slider-section__title {
+        font-size: var(--font-size-base);
+        margin-bottom: 10px;
+    }
+
+    .slider-section__title::after {
+        display: none;
+    }
+
+    .slider-track {
+        gap: var(--card-gap);
+        padding-bottom: 10px;
+        margin-bottom: -10px;
+    }
+
+    .slider-btn {
+        display: none;
+    }
+
+    /* ============================================
+       MOBILE VIDEO GRID
+       ============================================ */
+    .video-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 0 var(--row-padding);
+    }
+
+    .video-grid .video-card {
+        flex: auto;
+        width: 100%;
+    }
+
+    /* ============================================
+       MOBILE MODALS
+       ============================================ */
+    .modal {
+        align-items: flex-end;
+    }
+
+    .modal__container {
+        width: 100%;
+        max-width: none;
+        border-radius: 12px 12px 0 0;
+        max-height: 90vh;
+    }
+
+    .player-modal__content {
+        margin: 0;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+
+    /* ============================================
+       MOBILE MISC
+       ============================================ */
+    .section-banner {
+        height: 140px;
+        margin: 16px var(--row-padding);
+    }
+
+    .section-banner__title {
+        font-size: var(--font-size-lg);
+    }
+
+    .shortcut-card {
+        min-width: 160px;
+        height: 100px;
+        padding: 16px;
+    }
+
+    .shortcut-card h3 {
+        font-size: var(--font-size-base);
+    }
+
+    .view-tabs {
+        padding: 0 var(--row-padding);
+        gap: 8px;
+    }
+
+    .view-tab {
+        padding: 6px 16px;
+        font-size: var(--font-size-sm);
+    }
+
+    .back-to-top {
+        bottom: calc(var(--mobile-nav-height) + 20px);
+        right: 16px;
+        width: 40px;
+        height: 40px;
+    }
+}
+
+/* ============================================
+   EXTRA SMALL MOBILE (max-width: 480px)
+   ============================================ */
+@media (max-width: 480px) {
+    :root {
+        --card-width-desktop: 100px;
+    }
+
+    .video-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 6px;
+    }
+
+    .hero__title {
+        font-size: 1.5rem;
+    }
+
+    .hero__btn {
+        padding: 8px 12px;
+        font-size: var(--font-size-sm);
+    }
+
+    .sidebar__nav-item {
+        padding: 6px 8px;
+    }
+
+    .sidebar__nav-item svg {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* ============================================
+   LANDSCAPE MOBILE
+   ============================================ */
+@media (max-width: 767px) and (orientation: landscape) {
+    .hero {
+        height: 90vh;
+        min-height: 280px;
+    }
+
+    .hero__content {
+        bottom: 10%;
+    }
+
+    .hero__title {
+        font-size: 1.5rem;
+    }
+
+    .hero__description {
+        display: none;
+    }
+}
+
+/* ============================================
+   DESKTOP HOVER INTERACTIONS
+   ============================================ */
+@media (hover: hover) and (pointer: fine) {
+    .video-card:hover .video-card__container {
+        transform: scale(var(--card-hover-scale));
+    }
+
+    .video-card:hover .video-card__info {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .video-card:hover .video-card__overlay {
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   TOUCH DEVICES - NO HOVER
+   ============================================ */
+@media (hover: none) {
+
+    .video-card:hover .video-card__container,
+    .video-card:active .video-card__container {
+        transform: none;
+    }
+
+    .video-card__info {
+        display: none !important;
+    }
+
+    .slider-btn {
+        opacity: 1;
+    }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+
+    .netflix-header,
+    .sidebar,
+    .hero,
+    .floating-search-btn,
+    .back-to-top {
+        display: none !important;
+    }
+
+    .main-content {
+        padding: 0;
+        margin: 0;
+    }
+}
