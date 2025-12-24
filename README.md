@@ -2,18 +2,18 @@
 
 [![Docker Image](https://img.shields.io/docker/v/vndangkhoa/streamflix?label=DockerHub&logo=docker)](https://hub.docker.com/r/vndangkhoa/streamflix)
 [![GitHub](https://img.shields.io/github/v/release/vndangkhoa/Streamflow?label=GitHub&logo=github)](https://github.com/vndangkhoa/Streamflow)
-[![Version](https://img.shields.io/badge/version-1.0.8-blue)](https://github.com/vndangkhoa/Streamflow/releases)
+[![Version](https://img.shields.io/badge/version-1.0.9-blue)](https://github.com/vndangkhoa/Streamflow/releases)
 
 StreamFlow is a high-fidelity movie streaming application designed for NAS enthusiasts and home cinema lovers. It combines a premium **Apple TV+ inspired aesthetic** with a lightweight, high-performance backend, now consolidated into a **single Docker image** for effortless deployment.
 
-## 📋 Latest Release: v1.0.8
+## 📋 Latest Release: v1.0.9
 
-**What's New in v1.0.8:**
-- 📱 **Android Live Updates:** App now loads content directly from server (no need to reinstall APK for UI updates)
-- 🤖 **Auto-Update Script:** Added `deploy_apk.sh` for one-click deployment
-- 🛠️ **Docker Optimization:** Simplified build process (unified backend/frontend)
+**What's New in v1.0.9:**
+- 📱 **GitHub Releases APK:** Android APK now hosted on GitHub Releases (no Docker rebuild needed)
+- 🎨 **New App Icon:** Updated Android launcher icon with StreamFlix branding
+- � **Simplified Deployment:** `deploy_apk.sh` now uploads directly to GitHub Releases
 
-**Previous (v1.0.7):**
+**Previous (v1.0.8):**
 - 🔧 **HOTFIX: Fixed Docker crash** - Added missing `Request` import causing NameError on startup
 
 **Previous (v1.0.6):**
@@ -68,7 +68,7 @@ version: '3.8'
 services:
   # StreamFlow Unified (Backend + Frontend)
   app:
-    image: vndangkhoa/streamflix:1.0.8
+    image: vndangkhoa/streamflix:1.0.9
     platform: linux/amd64
     ports:
       - "3478:8000"

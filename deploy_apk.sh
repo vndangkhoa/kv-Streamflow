@@ -1,38 +1,65 @@
 #!/bin/bash
-APK_SOURCE="frontend/android/app/build/outputs/apk/debug/app-debug.apk"
-APK_DEST="backend/static/StreamFlix-Universal-v1.0.8.apk"
-HTML_FILE="backend/static/download.html"
+# StreamFlix APK Deployment Script
+# Uploads APK to GitHub Releases for easy distribution
 
-echo "🚀 Deploying Android APK v1.0.8..."
+APK_SOURCE="frontend/android/app/build/outputs/apk/debug/app-debug.apk"
+REPO="vndangkhoa/Streamflow"
+
+# Get version from build.gradle
+VERSION=$(grep -o 'versionName "[^"]*"' frontend/android/app/build.gradle | sed 's/versionName "//;s/"//')
+TAG="v${VERSION}"
+
+echo "🚀 Deploying StreamFlix APK ${TAG}..."
 
 # 1. Check if APK exists
 if [ ! -f "$APK_SOURCE" ]; then
     echo "❌ APK build not found at $APK_SOURCE"
-    echo "   Please wait for the build to finish."
+    echo "   Run ./build_apk.sh first to build the APK."
     exit 1
 fi
 
-# 2. Move and Rename APK
-echo "📦 Moving APK to static folder..."
-cp "$APK_SOURCE" "$APK_DEST"
-# Remove old APK if exists
-rm -f "backend/static/StreamFlix-Universal-v1.0.6.apk"
+# 2. Check if gh CLI is installed
+if ! command -v gh &> /dev/null; then
+    echo "❌ GitHub CLI (gh) is not installed."
+    echo "   Install it with: brew install gh"
+    echo "   Then authenticate with: gh auth login"
+    exit 1
+fi
 
-# 3. Update Download Page
-echo "📝 Updating download.html..."
-# Use perl for cross-platform regex replacement (handles Mac/Linux nuances better than sed)
-perl -i -pe 's/v1\.0\.6/v1.0.8/g' "$HTML_FILE"
+# 3. Copy APK with standard name
+APK_NAME="StreamFlix.apk"
+cp "$APK_SOURCE" "$APK_NAME"
+echo "📦 Prepared APK: $APK_NAME"
 
-# 4. Git Commit & Push
-echo "octocat: Committing to GitHub..."
-git add "$APK_DEST" "$HTML_FILE"
-git commit -m "v1.0.8: Added Android APK to static assets"
-git push origin main
+# 4. Create GitHub Release and upload APK
+echo "📤 Creating GitHub Release ${TAG}..."
+
+# Check if release already exists
+if gh release view "$TAG" --repo "$REPO" &> /dev/null; then
+    echo "⚠️  Release $TAG already exists. Updating..."
+    gh release upload "$TAG" "$APK_NAME" --repo "$REPO" --clobber
+else
+    echo "✨ Creating new release $TAG..."
+    gh release create "$TAG" "$APK_NAME" \
+        --repo "$REPO" \
+        --title "StreamFlix ${TAG}" \
+        --notes "### What's New in ${TAG}
+- 🤖 Android APK Release
+- 📱 Universal APK for all Android devices
+
+### Download
+Click **StreamFlix.apk** below to download."
+fi
+
+# 5. Cleanup
+rm "$APK_NAME"
 
 echo ""
 echo "✅ DEPLOYMENT SUCCESSFUL!"
 echo "------------------------------------------------"
-echo "👉 Next Step: Update your NAS Docker container."
-echo "   docker pull vndangkhoa/streamflix:1.0.8"
-echo "   (or rebuild if you are building locally)"
+echo "📱 Download URL:"
+echo "   https://github.com/${REPO}/releases/latest/download/StreamFlix.apk"
+echo ""
+echo "🌐 The download page will automatically link to this APK."
+echo "   No Docker rebuild required!"
 echo "------------------------------------------------"
