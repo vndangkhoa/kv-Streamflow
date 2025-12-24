@@ -1,4 +1,4 @@
-import { Haptics, ImpactStyle } from '@capacitor/haptics';
+import { Haptics, ImpactStyle } from '../js/capacitor-mock.js';
 
 /**
  * Trigger a light haptic feedback for small interactions

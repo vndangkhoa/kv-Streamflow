@@ -44,7 +44,9 @@
     {
         "imports": {
             "@capacitor/status-bar": "/js/capacitor-mock.js",
-            "@capacitor/haptics": "/js/capacitor-mock.js"
+            "@capacitor/haptics": "/js/capacitor-mock.js",
+            "artplayer": "https://esm.sh/artplayer@5.1.7",
+            "hls.js": "https://esm.sh/hls.js@1.5.7"
         }
     }
     </script>
@@ -62,6 +64,13 @@
         @media (max-width: 767px) {
             #mobileBottomNav {
                 padding-bottom: calc(1.25rem + var(--safe-bottom)) !important;
+            }
+
+            /* Add bottom padding to main content on mobile to prevent overlap with nav */
+            main,
+            #videoGrid,
+            .video-grid {
+                padding-bottom: calc(120px + var(--safe-bottom)) !important;
             }
         }
 
@@ -391,7 +400,14 @@
         </footer>
     </div>
 
-    <!-- Mobile Bottom Navigation -->
+    <!-- Mobile Floating "Get App" Button (shows only on mobile, above bottom nav) -->
+    <a href="/download.html"
+        class="fixed right-4 z-50 md:hidden flex items-center gap-2 bg-gradient-to-r from-[#ea2a33] to-[#ff6b6b] text-white px-4 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+        style="bottom: calc(100px + var(--safe-bottom, 0px));" aria-label="Get the App">
+        <span class="material-symbols-outlined text-lg">download</span>
+        <span class="text-sm font-semibold">Get App</span>
+    </a>
+
     <nav class="fixed bottom-0 left-0 right-0 z-50 bg-[#121212]/95 backdrop-blur-lg border-t border-white/5 pb-5 pt-3 px-6 md:hidden"
         id="mobileBottomNav">
         <div class="flex justify-between items-center max-w-lg mx-auto">

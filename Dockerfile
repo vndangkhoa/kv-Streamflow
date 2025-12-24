@@ -1,12 +1,4 @@
-# --- Stage 1: Build Frontend ---
-FROM node:20-slim AS frontend-builder
-WORKDIR /build-frontend
-COPY frontend/package*.json ./
-RUN npm install
-COPY frontend/ ./
-RUN npm run build
-
-# --- Stage 2: Final Image ---
+# StreamFlix Docker Image - Unified Backend + Frontend
 FROM python:3.11-slim
 WORKDIR /app
 
@@ -36,12 +28,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN playwright install chromium
 RUN playwright install-deps chromium
 
-# Copy Backend code
+# Copy Backend code (includes pre-built static files)
 COPY backend/ .
-
-# Copy built Frontend to Backend's static directory
-COPY --from=frontend-builder /build-frontend/dist ./static
-COPY --from=frontend-builder /build-frontend/StreamFlix-Universal-v1.0.6.apk ./static/
 
 # Create data directory for persistence
 RUN mkdir -p /app/data

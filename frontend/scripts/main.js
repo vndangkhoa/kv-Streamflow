@@ -13,7 +13,7 @@ import { createInfoModal } from './components/InfoModal.js';
 import { renderNewAndHotView } from './components/NewAndHot.js';
 import { KeyboardNavigation } from './keyboard-nav.js';
 import { hapticLight, hapticMedium, hapticSuccess } from './haptics.js';
-import { StatusBar, Style } from '@capacitor/status-bar';
+import { StatusBar, Style } from '../js/capacitor-mock.js';
 
 /**
  * SplashScreen Controller
@@ -141,8 +141,10 @@ async function init() {
                 // Handle routing
                 if (view === 'home') {
                     renderHome();
+                    // Scroll to top for home
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else if (view === 'search') {
-                    // Mobile Search View
+                    // Mobile Search View - don't scroll to top
                     if (window.innerWidth < 768) {
                         try {
                             renderMobileSearch();
@@ -154,6 +156,7 @@ async function init() {
                         elements.searchInput.focus();
                     }
                 } else if (view === 'mylist') {
+                    // My List View - don't scroll to top
                     if (window.innerWidth < 768) {
                         renderMobileMyList();
                     } else {
@@ -166,12 +169,13 @@ async function init() {
                 } else if (view === 'cinema') {
                     setMobileNavActive('cinema');
                     renderCategoryView('cinema');
+                    // Scroll to top for category views
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 } else {
                     renderCategoryView(view);
+                    // Scroll to top for category views
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
-
-                // Roll back to hero banner (scroll to top)
-                window.scrollTo({ top: 0, behavior: 'smooth' });
             });
         });
     }
@@ -281,7 +285,7 @@ function renderHero(video = null) {
 
         // Play button
         // Remove old listeners to prevent stacking
-        if (heroPlayBtn) {
+        if (heroPlayBtn && heroPlayBtn.parentNode) {
             const newPlayBtn = heroPlayBtn.cloneNode(true);
             heroPlayBtn.parentNode.replaceChild(newPlayBtn, heroPlayBtn);
             newPlayBtn.addEventListener('click', () => {
@@ -291,7 +295,7 @@ function renderHero(video = null) {
         }
 
         // Info button
-        if (heroInfoBtn) {
+        if (heroInfoBtn && heroInfoBtn.parentNode) {
             const newInfoBtn = heroInfoBtn.cloneNode(true);
             heroInfoBtn.parentNode.replaceChild(newInfoBtn, heroInfoBtn);
             newInfoBtn.addEventListener('click', () => handleShowInfo(featured));
@@ -541,6 +545,13 @@ function setupEventListeners() {
     const streamflixNavLinks = document.querySelectorAll('.nav-link');
     streamflixNavLinks.forEach(link => {
         link.addEventListener('click', (e) => {
+            // Allow links with real href (not '#') to navigate normally
+            const href = link.getAttribute('href');
+            if (href && href !== '#' && !href.startsWith('#')) {
+                // This is a real link (like Install App), let it navigate
+                return;
+            }
+
             e.preventDefault();
             const view = link.dataset.view;
 
@@ -1236,6 +1247,11 @@ function createTailwindCard(video, showRank = false, rank = 0, orientation = 've
         image = video.backdrop;
     }
 
+    // PERFORMANCE: Use image proxy with optimized sizes (quality vs speed balance)
+    const isMobile = window.innerWidth < 768;
+    const imageWidth = isMobile ? 180 : (orientation === 'horizontal' ? 400 : 200);
+    const proxiedImage = image ? api.getProxyUrl(image, imageWidth) : '';
+
     const title = video.name || video.title || 'Untitled';
     const year = video.year || '';
     const quality = video.quality || 'HD';
@@ -1249,7 +1265,7 @@ function createTailwindCard(video, showRank = false, rank = 0, orientation = 've
 
     card.innerHTML = `
         <div class="relative ${aspectClass} rounded-md overflow-hidden bg-surface-dark shadow-lg transition-all duration-300 group-hover:shadow-2xl ring-0 group-hover:ring-2 group-hover:ring-white/20">
-            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style="background-image: url('${image}');"></div>
+            <div class="absolute inset-0 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style="background-image: url('${proxiedImage}');"></div>
             
             <!-- Gradient Overlay (Only visible on hover) -->
             <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -1908,13 +1924,7 @@ function handleVideoPlay(video) {
     // Store all videos for recommendations
     sessionStorage.setItem('allVideos', JSON.stringify(state.videos));
 
-    // Handle back button gesture support via pushState if opening player in same page
-    // (Though here we navigate, it's good practice tracker)
-    if (!window.history.state?.playerOpen) {
-        window.history.pushState({ playerOpen: true }, '', window.location.href);
-    }
-
-    // Navigation to Watch
+    // Navigate directly to the watch page (no pushState needed for full page navigation)
     navigateToWatch(video);
 }
 
@@ -2184,7 +2194,10 @@ async function renderCategoryView(viewType) {
 
     const sections = sectionConfigs[viewType] || sectionConfigs.home;
 
-    // Check sessionStorage for cached view (Home/Cinema only to keep it fresh)
+    // DISABLED: Session cache restoration breaks event listeners
+    // Event handlers are set up via JavaScript and lost when HTML is restored
+    // TODO: Implement event delegation to fix this properly
+    /*
     if (viewType === 'home' || viewType === 'cinema') {
         const cachedHTML = sessionStorage.getItem(`view_cache_${viewType}`);
         if (cachedHTML) {
@@ -2194,6 +2207,7 @@ async function renderCategoryView(viewType) {
             if (elements.videoGrid.children.length > 0) return;
         }
     }
+    */
 
     // Lazy loading configuration
     const EAGER_LOAD_COUNT = 3; // Load first 3 sections immediately

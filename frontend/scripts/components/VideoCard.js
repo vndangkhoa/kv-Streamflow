@@ -82,8 +82,11 @@ export function createVideoCard(video, onPlay, onInfo) {
     card.dataset.videoId = video.id;
 
     // PERFORMANCE: Use backend image proxy for faster loading (WebP + Resized)
+    // Use optimized sizes for mobile/desktop balance (quality vs speed)
+    const isMobile = window.innerWidth < 768;
+    const imageWidth = isMobile ? 180 : 200;
     const originalThumbnail = video.thumbnail || '';
-    const thumbnail = api.getProxyUrl(originalThumbnail, 200);
+    const thumbnail = api.getProxyUrl(originalThumbnail, imageWidth);
     const year = video.year || new Date().getFullYear();
 
     // Smart badge detection
