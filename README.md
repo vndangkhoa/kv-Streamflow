@@ -9,7 +9,7 @@ StreamFlow is a high-fidelity movie streaming application designed for NAS enthu
 ## 📋 Latest Release: v1.0.7
 
 **What's New in v1.0.7:**
-- � **HOTFIX: Fixed Docker crash** - Added missing `Request` import causing NameError on startup
+- 🔧 **HOTFIX: Fixed Docker crash** - Added missing `Request` import causing NameError on startup
 
 **Previous (v1.0.6):**
 - 🖼️ Optimized mobile image loading - 40% faster thumbnail loading
@@ -63,7 +63,7 @@ version: '3.8'
 services:
   # StreamFlow Unified (Backend + Frontend)
   app:
-    image: vndangkhoa/streamflow:latest
+    image: vndangkhoa/streamflix:1.0.7
     platform: linux/amd64
     ports:
       - "3478:8000"
