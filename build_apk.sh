@@ -2,7 +2,7 @@
 echo "🚀 Starting StreamFlix Android Build..."
 
 # 1. Setup Java 17 (using the one we downloaded)
-export JAVA_HOME=/tmp/jdk-17.0.13+11/Contents/Home
+export JAVA_HOME=/tmp/jdk-21.0.9+10/Contents/Home
 export PATH=$JAVA_HOME/bin:$PATH
 
 # 2. Setup Gradle (using the one we downloaded)
