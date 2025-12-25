@@ -501,7 +501,7 @@
 .video-card.keyboard-focused .video-card__container,
 .video-card:focus .video-card__container {
     transform: scale(1.08);
-    box-shadow: 
+    box-shadow:
         0 0 0 4px var(--netflix-red),
         0 0 30px rgba(229, 9, 20, 0.5),
         var(--shadow-card-hover);
@@ -510,12 +510,40 @@
 
 /* TV Mode: Larger focus indicators for viewing distance */
 @media (min-width: 1280px) {
+
     .video-card.keyboard-focused .video-card__container,
     .video-card:focus .video-card__container {
         transform: scale(1.1);
-        box-shadow: 
+        box-shadow:
             0 0 0 6px var(--netflix-red),
             0 0 50px rgba(229, 9, 20, 0.6),
             var(--shadow-card-hover);
     }
+}
+
+/* TV Mode Body Class - Enhanced for 10-foot UI */
+body.tv-mode .video-card.keyboard-focused .video-card__container,
+body.tv-mode .video-card:focus .video-card__container {
+    transform: scale(1.12);
+    box-shadow:
+        0 0 0 8px var(--netflix-red),
+        0 0 60px rgba(229, 9, 20, 0.7),
+        var(--shadow-card-hover);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Generic focus styles for other interactive elements */
+body.tv-mode button:focus,
+body.tv-mode a:focus,
+body.tv-mode .nav-link:focus,
+body.tv-mode .tab-btn:focus,
+body.tv-mode .episode-row:focus {
+    outline: 3px solid var(--netflix-red);
+    outline-offset: 2px;
+}
+
+/* Force show overlay on keyboard focus (for TV users) */
+.video-card.keyboard-focused .video-card__overlay,
+.video-card:focus .video-card__overlay {
+    opacity: 1;
 }

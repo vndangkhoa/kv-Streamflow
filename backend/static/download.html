@@ -6,7 +6,8 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>StreamFlix - Download App</title>
-    <link rel="icon" type="image/svg+xml" href="/assets/logo-DuxtXB_R.svg">
+    <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
+    <link rel="stylesheet" href="/styles/index.css">
     <style>
         :root {
             --safe-top: env(safe-area-inset-top, 0px);
@@ -196,7 +197,6 @@
             }
         }
     </style>
-  <link rel="stylesheet" crossorigin href="/assets/download-m6ZKmHFf.css">
 </head>
 
 <body>
@@ -204,19 +204,19 @@
     <a href="/" class="back-link">← Back to StreamFlix</a>
 
     <div class="download-container">
-        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNjAiPgogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJnb2xkR3JhZGllbnQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojZTUwOTE0Ii8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2IyMDcwZiIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgPCEtLSBQbGF5IGJ1dHRvbiBpY29uIC0tPgogIDxjaXJjbGUgY3g9IjI1IiBjeT0iMzAiIHI9IjIyIiBmaWxsPSJ1cmwoI2dvbGRHcmFkaWVudCkiLz4KICA8cG9seWdvbiBwb2ludHM9IjIwLDIwIDIwLDQwIDM4LDMwIiBmaWxsPSIjMTQxNDE0Ii8+CiAgPCEtLSBUZXh0IC0tPgogIDx0ZXh0IHg9IjU1IiB5PSI0MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjI4IiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI2ZmZmZmZiI+U3RyZWFtPHRzcGFuIGZpbGw9InVybCgjZ29sZEdyYWRpZW50KSI+RmxpeDwvdHNwYW4+PC90ZXh0Pgo8L3N2Zz4K" alt="StreamFlix Logo" class="logo-hero">
+        <img src="/assets/logo.svg" alt="StreamFlix Logo" class="logo-hero">
 
         <h1>Download StreamFlix</h1>
         <p class="subtitle">Experience cinema-quality streaming on all your devices. Ad-free, high performance, and
             built for privacy.</p>
 
         <div class="platform-grid">
-            <!-- Android Card -->
+            <!-- Android Mobile Card -->
             <div class="platform-card">
-                <span class="platform-icon">🤖</span>
-                <h2 class="platform-title">Android Mobile & TV</h2>
-                <span class="platform-version">Latest Version (Universal APK)</span>
-                <a href="https://github.com/vndangkhoa/Streamflow/releases/latest/download/app-debug.apk"
+                <span class="platform-icon">📱</span>
+                <h2 class="platform-title">Android Mobile</h2>
+                <span class="platform-version">Phones & Tablets</span>
+                <a href="https://github.com/vndangkhoa/Streamflow/releases/latest/download/StreamFlix.apk"
                     class="btn-download" target="_blank">Download APK</a>
 
                 <div class="instructions">
@@ -225,6 +225,31 @@
                         <li>Download the APK file.</li>
                         <li>Open the file and select "Install".</li>
                         <li>If prompted, allow installation from "Unknown Sources".</li>
+                    </ol>
+                </div>
+            </div>
+
+            <!-- Android TV Card -->
+            <div class="platform-card">
+                <span class="platform-icon">📺</span>
+                <h2 class="platform-title">Android TV</h2>
+                <span class="platform-version">Smart TVs & Streaming Devices</span>
+                <a href="https://github.com/vndangkhoa/Streamflow/releases/latest/download/StreamFlix-TV.apk"
+                    class="btn-download" target="_blank">Download TV APK</a>
+
+                <div class="instructions">
+                    <strong>Works with:</strong>
+                    <ul style="padding-left: 20px; margin: 8px 0;">
+                        <li>Android TV (Sony, Philips, TCL, etc.)</li>
+                        <li>Google Chromecast with Google TV</li>
+                        <li>NVIDIA Shield TV</li>
+                        <li>Amazon Fire TV Stick</li>
+                        <li>Xiaomi Mi Box</li>
+                    </ul>
+                    <strong>Install via USB:</strong>
+                    <ol>
+                        <li>Enable "Unknown Sources" in Settings → Security.</li>
+                        <li>Use a file manager or ADB to install.</li>
                     </ol>
                 </div>
             </div>
