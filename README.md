@@ -40,14 +40,15 @@ A dedicated native Android TV app built with Google's **Leanback** library for t
 | **My List** | Save favorite movies for quick access |
 
 ### Downloads
-- **[Download APK (v1.2.0)](https://github.com/vndangkhoa/Streamflow/releases/download/v1.2.0/StreamFlix-TV-v1.2.0-debug.apk)** - Direct Download
+- **[Download TV APK (v1.2.0)](https://github.com/vndangkhoa/Streamflow/releases/download/v1.2.0/StreamFlix-TV.apk)** - Direct Download
+- **[Download Mobile APK (v1.2.0)](https://github.com/vndangkhoa/Streamflow/releases/download/v1.2.0/StreamFlix.apk)** - Direct Download
 - **[All Releases](https://github.com/vndangkhoa/Streamflow/releases/tag/v1.2.0)** - View Release Page
 
 ### Installation
 
 ```bash
 # Install via ADB
-adb install StreamFlix-TV-v1.2.0-debug.apk
+adb install StreamFlix-TV.apk
 ```
 
 ### Project Structure
