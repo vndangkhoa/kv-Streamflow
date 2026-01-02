@@ -76,8 +76,8 @@ object ApiClient {
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            // .baseUrl(BuildConfig.API_BASE_URL + "/") // Production URL
-            .baseUrl("http://10.0.2.2:8000/") // Local Emulator URL for testing
+            .baseUrl(BuildConfig.API_BASE_URL + "/") // Production URL
+            // .baseUrl("http://10.0.2.2:8000/") // Local Emulator URL for testing
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
