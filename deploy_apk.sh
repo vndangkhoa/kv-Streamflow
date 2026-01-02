@@ -3,7 +3,7 @@
 # Uploads Mobile and TV APKs to GitHub Releases for easy distribution
 
 APK_MOBILE_SOURCE="frontend/android/app/build/outputs/apk/debug/app-debug.apk"
-APK_TV_SOURCE="frontend/android/app/build/outputs/apk/debug/app-debug.apk"  # Same APK for now, update when separate TV build is ready
+APK_TV_SOURCE="android-tv/app/build/outputs/apk/debug/app-debug.apk"
 REPO="vndangkhoa/Streamflow"
 
 # Get version from build.gradle

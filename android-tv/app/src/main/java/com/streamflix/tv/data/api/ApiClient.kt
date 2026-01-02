@@ -59,7 +59,7 @@ object ApiClient {
 
     private fun signRequest(timestamp: String, path: String, method: String): String? {
         // This should match the key in backend/security.py and frontend/scripts/api.js
-        val secretKey = "your-super-secret-key-change-this"
+        val secretKey = "sf_tv_secure_9s8d7f6g5h4j3k2l1"
         val payload = "$timestamp$path${method.uppercase()}"
         
         return try {
@@ -76,7 +76,8 @@ object ApiClient {
 
     private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl(BuildConfig.API_BASE_URL + "/")
+            // .baseUrl(BuildConfig.API_BASE_URL + "/") // Production URL
+            .baseUrl("http://10.0.2.2:8000/") // Local Emulator URL for testing
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

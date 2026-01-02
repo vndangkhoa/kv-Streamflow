@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Base TV Theme -->
-    <style name="Theme.StreamFlixTV" parent="Theme.Leanback">
+    <style name="Theme.StreamFlixTV" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@color/background</item>
         <item name="android:colorPrimary">@color/primary</item>
         <item name="android:colorPrimaryDark">@color/primary_dark</item>
@@ -30,6 +30,14 @@
     <style name="Theme.StreamFlixTV.Playback" parent="Theme.Leanback">
         <item name="android:windowBackground">@color/player_background</item>
         <item name="playbackControlsAutoHideTimeout">3000</item>
+    </style>
+
+    <!-- Search Theme (Must be Leanback) -->
+    <style name="Theme.StreamFlixTV.Search" parent="Theme.Leanback">
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="defaultBrandColor">@color/primary</item>
+        <item name="defaultSearchColor">@color/accent</item>
     </style>
 
     <!-- Card Styles -->

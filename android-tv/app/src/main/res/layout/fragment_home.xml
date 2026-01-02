@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_dark"
+    tools:context=".ui.home.HomeFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <!-- Sidebar -->
+        <LinearLayout
+            android:id="@+id/sidebarContainer"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:paddingTop="60dp">
+
+            <ImageView
+                android:id="@+id/sidebarSearch"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="32dp"
+                android:src="@drawable/ic_sidebar_explore"
+                android:alpha="0.7"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:contentDescription="@string/search_hint"/>
+
+            <ImageView
+                android:id="@+id/sidebarHome"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="32dp"
+                android:src="@drawable/splash_logo"
+                android:alpha="1.0"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:contentDescription="@string/app_name"/>
+
+            <ImageView
+                android:id="@+id/sidebarSeries"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="32dp"
+                android:src="@drawable/ic_tv_series"
+                android:alpha="0.7"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:contentDescription="Series"/>
+
+            <include
+            android:id="@+id/sidebarMovies"
+            layout="@layout/item_sidebar_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp" />
+            
+        <ImageView
+            android:id="@+id/sidebarKorea"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/ic_sidebar_korea"
+            android:contentDescription="Korea"
+            android:alpha="0.5"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless" />
+            
+        <ImageView
+            android:id="@+id/sidebarChina"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/ic_sidebar_china"
+            android:contentDescription="China"
+            android:alpha="0.5"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless" />
+            
+        <ImageView
+            android:id="@+id/sidebarAnime"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/ic_sidebar_anime"
+            android:contentDescription="Anime"
+            android:alpha="0.5"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/sidebarUpdate"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginBottom="32dp"
+                android:src="@drawable/ic_update"
+                android:alpha="0.7"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:contentDescription="Update App"/>
+
+        </LinearLayout>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/homeScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <!-- Hero Slider (Featured Content) -->
+                <FrameLayout
+                    android:id="@+id/heroContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="500dp">
+
+                    <!-- Background Image -->
+                    <ImageView
+                        android:id="@+id/heroBackdrop"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:foreground="#33000000"
+                        android:contentDescription="@string/hero_backdrop" />
+
+                    <!-- Gradient Overlay (Bottom & Left) -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/hero_gradient" />
+
+                    <!-- Hero Content -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:paddingStart="24dp"
+                        android:paddingEnd="48dp"
+                        android:paddingTop="60dp">
+
+                        <!-- Movie Logo/Title (Large) -->
+                        <TextView
+                            android:id="@+id/heroTitle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="64sp"
+                            android:textColor="@color/white"
+                            android:textStyle="bold"
+                            android:maxLines="2"
+                            android:ellipsize="end"
+                            android:shadowColor="#80000000"
+                            android:shadowDx="0"
+                            android:shadowDy="4"
+                            android:shadowRadius="12"
+                            android:letterSpacing="-0.02"
+                            tools:text="STRANGER THINGS" />
+
+                        <!-- Meta Info Row -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+                            
+                            <TextView
+                                android:id="@+id/heroMatch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="98% Match"
+                                android:textColor="#46d369"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:layout_marginEnd="12dp"/>
+
+                            <TextView
+                                android:id="@+id/heroYear"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@color/text_secondary"
+                                tools:text="2024" />
+
+                            <View
+                                android:layout_width="4dp"
+                                android:layout_height="4dp"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginEnd="12dp"
+                                android:background="@color/text_secondary" />
+                            
+                            <TextView
+                                android:id="@+id/heroRating"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="16sp"
+                                android:textColor="@color/text_secondary"
+                                tools:text="4.5" />
+
+                            <View
+                                android:layout_width="4dp"
+                                android:layout_height="4dp"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginEnd="12dp"
+                                android:background="@color/text_secondary" />
+                            
+                            <TextView
+                                android:id="@+id/heroDuration"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="2 Seasons"
+                                android:textColor="@color/text_secondary"
+                                android:textSize="16sp"/>
+                                
+                             <View
+                                android:layout_width="4dp"
+                                android:layout_height="4dp"
+                                android:layout_marginStart="12dp"
+                                android:layout_marginEnd="12dp"
+                                android:background="@color/text_secondary" />
+
+                            <TextView
+                                android:id="@+id/heroQuality"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="12sp"
+                                android:textColor="@color/white"
+                                android:background="@drawable/quality_badge_bg"
+                                android:paddingStart="6dp"
+                                android:paddingEnd="6dp"
+                                android:paddingTop="1dp"
+                                android:paddingBottom="1dp"
+                                tools:text="HD" />
+
+                        </LinearLayout>
+
+                        <!-- Description -->
+                        <TextView
+                            android:id="@+id/heroDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:textSize="18sp"
+                            android:lineSpacingExtra="4dp"
+                            android:textColor="#E6FFFFFF"
+                            android:maxLines="3"
+                            android:ellipsize="end"
+                            android:maxWidth="550dp"
+                            android:shadowColor="#80000000"
+                            android:shadowDx="0"
+                            android:shadowDy="2"
+                            android:shadowRadius="4"
+                            tools:text="When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces, and one strange little girl." />
+
+                        <!-- Action Buttons -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="28dp"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/heroPlayButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="44dp"
+                                android:minWidth="120dp"
+                                android:text="@string/play"
+                                android:textColor="@color/black"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:background="@drawable/button_primary_bg"
+                                android:drawableStart="@drawable/ic_play"
+                                android:drawablePadding="8dp"
+                                android:paddingStart="20dp"
+                                android:paddingEnd="20dp"
+                                android:stateListAnimator="@null"
+                                android:backgroundTint="@color/white"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true" />
+
+                            <Button
+                                android:id="@+id/heroInfoButton"
+                                android:layout_width="wrap_content"
+                                android:layout_height="44dp"
+                                android:layout_marginStart="16dp"
+                                android:minWidth="140dp"
+                                android:text="@string/more_info"
+                                android:textColor="@color/white"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:background="@drawable/button_secondary_bg"
+                                android:drawableStart="@drawable/ic_info"
+                                android:drawablePadding="8dp"
+                                android:paddingStart="20dp"
+                                android:paddingEnd="20dp"
+                                android:stateListAnimator="@null"
+                                android:backgroundTint="#80333333"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <!-- Hero Indicator Dots -->
+                    <LinearLayout
+                        android:id="@+id/heroIndicators"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:layout_marginEnd="48dp"
+                        android:layout_marginBottom="32dp"
+                        android:orientation="horizontal" />
+
+                </FrameLayout>
+
+                <!-- Category Rows Container -->
+                <TextView
+                    android:id="@+id/popularHeader"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Popular on Netflix"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:textColor="#E6FFFFFF"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="-40dp"/> <!-- Overlap slightly or just separate -->
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/categoryRowsRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:clipToPadding="false"
+                    android:paddingBottom="48dp"
+                    android:paddingStart="24dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:nestedScrollingEnabled="false"
+                    android:nextFocusUp="@id/heroPlayButton" />
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+    <!-- Loading Overlay -->
+    <FrameLayout
+        android:id="@+id/loadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#E6141414"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/primary" />
+
+    </FrameLayout>
+
+</FrameLayout>

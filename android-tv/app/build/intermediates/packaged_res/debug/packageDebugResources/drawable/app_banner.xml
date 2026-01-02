@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="#E50914"/>
-    <corners android:radius="4dp"/>
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/background"/>
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/ic_streamflix_logo"
+        android:width="120dp"
+        android:height="120dp"
+        android:gravity="center"/>
+</layer-list>

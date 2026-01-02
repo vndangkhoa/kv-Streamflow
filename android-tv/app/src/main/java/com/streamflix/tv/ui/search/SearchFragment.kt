@@ -35,6 +35,11 @@ class SearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
         super.onCreate(savedInstanceState)
         setSearchResultProvider(this)
         setupEventListeners()
+        
+        // Customization
+        // setBadgeDrawable(resources.getDrawable(R.drawable.app_banner, null))
+        setTitle("Search StreamFlix")
+        // setSearchAffordanceColors(resources.getColor(R.color.primary), resources.getColor(R.color.background_dark))
     }
 
     private fun setupEventListeners() {
@@ -105,6 +110,8 @@ class SearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
             showNoResults(query)
             return
         }
+        
+        // Search working - no debug needed
 
         val cardPresenter = CardPresenter()
         val listRowAdapter = ArrayObjectAdapter(cardPresenter)
@@ -120,6 +127,8 @@ class SearchFragment : SearchSupportFragment(), SearchSupportFragment.SearchResu
     private fun showNoResults(query: String) {
         rowsAdapter.clear()
         // The Leanback search fragment will show a "no results" message automatically
+        // But let's add a Toast for clarity
+        android.widget.Toast.makeText(requireContext(), "No results found for '$query'", android.widget.Toast.LENGTH_SHORT).show()
     }
 
     private fun showError() {

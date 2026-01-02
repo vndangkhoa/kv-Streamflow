@@ -19,6 +19,7 @@
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <permission
@@ -36,7 +37,6 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:testOnly="true"
         android:theme="@style/Theme.StreamFlixTV"
         android:usesCleartextTraffic="true" >
 
@@ -73,16 +73,22 @@
             android:exported="false"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.StreamFlixTV.Playback" />
-
-        <!-- Search Activity -->
         <activity
             android:name="com.streamflix.tv.ui.search.SearchActivity"
             android:exported="true"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.StreamFlixTV.Search" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
         </activity>
+
+        <!-- Episodes Activity -->
+        <activity
+            android:name="com.streamflix.tv.ui.episodes.EpisodesActivity"
+            android:exported="false"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.StreamFlixTV" />
 
         <provider
             android:name="androidx.startup.InitializationProvider"

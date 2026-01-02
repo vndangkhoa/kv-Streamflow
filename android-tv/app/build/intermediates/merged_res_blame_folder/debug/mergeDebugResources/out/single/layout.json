@@ -1,22 +1,54 @@
 [
     {
-        "merged": "C:\\Users\\Admin\\.gradle\\daemon\\8.13\\com.streamflix.tv.app-mergeDebugResources-40:\\layout\\activity_playback.xml",
-        "source": "C:\\Users\\Admin\\.gradle\\daemon\\8.13\\com.streamflix.tv.app-main-43:\\layout\\activity_playback.xml"
+        "merged": "com.streamflix.tv.app-mergeDebugResources-40:/layout/activity_main_home.xml",
+        "source": "com.streamflix.tv.app-main-43:/layout/activity_main_home.xml"
     },
     {
-        "merged": "C:\\Users\\Admin\\.gradle\\daemon\\8.13\\com.streamflix.tv.app-mergeDebugResources-40:\\layout\\activity_main.xml",
-        "source": "C:\\Users\\Admin\\.gradle\\daemon\\8.13\\com.streamflix.tv.app-main-43:\\layout\\activity_main.xml"
+        "merged": "com.streamflix.tv.app-mergeDebugResources-40:/layout/activity_search.xml",
+        "source": "com.streamflix.tv.app-main-43:/layout/activity_search.xml"
     },
     {
-        "merged": "C:\\Users\\Admin\\.gradle\\daemon\\8.13\\com.streamflix.tv.app-mergeDebugResources-40:\\layout\\activity_details.xml",
-        "source": "C:\\Users\\Admin\\.gradle\\daemon\\8.13\\com.streamflix.tv.app-main-43:\\layout\\activity_details.xml"
+        "merged": "com.streamflix.tv.app-mergeDebugResources-40:/layout/activity_main.xml",
+        "source": "com.streamflix.tv.app-main-43:/layout/activity_main.xml"
     },
     {
-        "merged": "C:\\Users\\Admin\\.gradle\\daemon\\8.13\\com.streamflix.tv.app-mergeDebugResources-40:\\layout\\activity_search.xml",
-        "source": "C:\\Users\\Admin\\.gradle\\daemon\\8.13\\com.streamflix.tv.app-main-43:\\layout\\activity_search.xml"
+        "merged": "com.streamflix.tv.app-mergeDebugResources-40:/layout/activity_episodes.xml",
+        "source": "com.streamflix.tv.app-main-43:/layout/activity_episodes.xml"
+    },
+    {
+        "merged": "com.streamflix.tv.app-mergeDebugResources-40:/layout/fragment_episodes.xml",
+        "source": "com.streamflix.tv.app-main-43:/layout/fragment_episodes.xml"
+    },
+    {
+        "merged": "com.streamflix.tv.app-mergeDebugResources-40:/layout/item_category_row.xml",
+        "source": "com.streamflix.tv.app-main-43:/layout/item_category_row.xml"
+    },
+    {
+        "merged": "com.streamflix.tv.app-mergeDebugResources-40:/layout/item_episode.xml",
+        "source": "com.streamflix.tv.app-main-43:/layout/item_episode.xml"
+    },
+    {
+        "merged": "com.streamflix.tv.app-mergeDebugResources-40:/layout/activity_playback.xml",
+        "source": "com.streamflix.tv.app-main-43:/layout/activity_playback.xml"
     },
     {
         "merged": "com.streamflix.tv.app-mergeDebugResources-40:/layout/activity_splash.xml",
         "source": "com.streamflix.tv.app-main-43:/layout/activity_splash.xml"
+    },
+    {
+        "merged": "com.streamflix.tv.app-mergeDebugResources-40:/layout/item_movie_card.xml",
+        "source": "com.streamflix.tv.app-main-43:/layout/item_movie_card.xml"
+    },
+    {
+        "merged": "com.streamflix.tv.app-mergeDebugResources-40:/layout/item_sidebar_icon.xml",
+        "source": "com.streamflix.tv.app-main-43:/layout/item_sidebar_icon.xml"
+    },
+    {
+        "merged": "com.streamflix.tv.app-mergeDebugResources-40:/layout/fragment_home.xml",
+        "source": "com.streamflix.tv.app-main-43:/layout/fragment_home.xml"
+    },
+    {
+        "merged": "com.streamflix.tv.app-mergeDebugResources-40:/layout/activity_details.xml",
+        "source": "com.streamflix.tv.app-main-43:/layout/activity_details.xml"
     }
 ]

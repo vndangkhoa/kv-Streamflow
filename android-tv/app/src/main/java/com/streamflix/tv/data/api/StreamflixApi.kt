@@ -74,5 +74,6 @@ interface StreamflixApi {
         const val SORT_MODIFIED = "modified"
         const val SORT_YEAR = "year"
         const val SORT_RATING = "rating"
+        const val SORT_VIEWS = "views"
     }
 }

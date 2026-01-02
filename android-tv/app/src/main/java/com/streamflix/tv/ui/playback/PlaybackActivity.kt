@@ -1,12 +1,14 @@
 package com.streamflix.tv.ui.playback
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.fragment.app.FragmentActivity
 import com.streamflix.tv.R
 import com.streamflix.tv.data.model.Movie
 
 /**
  * Activity for video playback
+ * Keeps screen on during playback to prevent sleep
  */
 class PlaybackActivity : FragmentActivity() {
 
@@ -17,6 +19,10 @@ class PlaybackActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Keep screen on during video playback
+        window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        
         setContentView(R.layout.activity_playback)
 
         if (savedInstanceState == null) {

@@ -7,6 +7,7 @@
     
     <!-- Background Colors -->
     <color name="background">#141414</color>
+    <color name="background_dark">#141414</color>
     <color name="surface">#1F1F1F</color>
     <color name="card_background">#2A2A2A</color>
     
@@ -32,4 +33,8 @@
     <!-- Rating Colors -->
     <color name="rating_fresh">#FA320A</color>
     <color name="rating_rotten">#0D9108</color>
+    
+    <!-- Standard Colors -->
+    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF000000</color>
 </resources>

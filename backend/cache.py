@@ -4,7 +4,11 @@ Cache module - Redis with in-memory fallback for development
 import json
 import time
 from typing import Optional, Any
-import os
+
+from config import settings
+from logging_config import get_logger
+
+logger = get_logger("cache")
 
 # Try to import redis, fall back to in-memory if not available
 try:
@@ -44,27 +48,30 @@ class CacheManager:
     Default TTL: 3 hours (10800 seconds)
     """
     
-    DEFAULT_TTL = 10800  # 3 hours
-    
     def __init__(self):
         self.client = None
         self.is_redis = False
         self._connect()
     
+    @property
+    def default_ttl(self) -> int:
+        """Get default TTL from settings"""
+        return settings.cache_default_ttl
+    
     def _connect(self):
-        redis_url = os.getenv("REDIS_URL", "redis://localhost:6379")
+        redis_url = settings.redis_url
         
         if REDIS_AVAILABLE:
             try:
                 self.client = redis.from_url(redis_url, decode_responses=True)
                 self.client.ping()
                 self.is_redis = True
-                print("✓ Connected to Redis")
+                logger.info("Connected to Redis")
             except Exception as e:
-                print(f"⚠ Redis not available ({e}), using in-memory cache")
+                logger.warning(f"Redis not available ({e}), using in-memory cache")
                 self.client = InMemoryCache()
         else:
-            print("⚠ Redis package not installed, using in-memory cache")
+            logger.warning("Redis package not installed, using in-memory cache")
             self.client = InMemoryCache()
     
     def get(self, key: str) -> Optional[Any]:
@@ -73,7 +80,7 @@ class CacheManager:
         if data:
             try:
                 return json.loads(data)
-            except:
+            except (json.JSONDecodeError, TypeError):
                 return data
         return None
     
@@ -81,7 +88,7 @@ class CacheManager:
         """Cache data by key"""
         if isinstance(value, (dict, list)):
             value = json.dumps(value)
-        self.client.set(key, value, ex=ttl or self.DEFAULT_TTL)
+        self.client.set(key, value, ex=ttl or self.default_ttl)
 
     def invalidate(self, key: str) -> None:
         """Remove cached data"""
@@ -90,3 +97,4 @@ class CacheManager:
 
 # Singleton instance
 cache = CacheManager()
+

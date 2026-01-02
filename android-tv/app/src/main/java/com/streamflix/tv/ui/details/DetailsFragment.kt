@@ -20,6 +20,7 @@ import com.streamflix.tv.data.api.ApiClient
 import com.streamflix.tv.data.model.Movie
 import com.streamflix.tv.ui.browse.CardPresenter
 import com.streamflix.tv.ui.playback.PlaybackActivity
+import com.streamflix.tv.ui.episodes.EpisodesActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -35,6 +36,7 @@ class DetailsFragment : DetailsSupportFragment() {
         
         private const val ACTION_PLAY = 1L
         private const val ACTION_ADD_LIST = 2L
+        private const val ACTION_EPISODES = 3L
         
         fun newInstance(movie: Movie): DetailsFragment {
             return DetailsFragment().apply {
@@ -49,6 +51,9 @@ class DetailsFragment : DetailsSupportFragment() {
     private lateinit var backgroundController: DetailsSupportFragmentBackgroundController
     private lateinit var presenterSelector: ClassPresenterSelector
     private lateinit var rowsAdapter: ArrayObjectAdapter
+    
+    // Episode data for TV series
+    private var episodeServers: List<com.streamflix.tv.data.model.EpisodeServer> = emptyList()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -83,6 +88,7 @@ class DetailsFragment : DetailsSupportFragment() {
                 when (action.id) {
                     ACTION_PLAY -> playMovie()
                     ACTION_ADD_LIST -> addToList()
+                    ACTION_EPISODES -> showEpisodes()
                 }
             }
         }
@@ -126,9 +132,14 @@ class DetailsFragment : DetailsSupportFragment() {
                     director = parseAnyToList(detail.director) ?: movie.director,
                     actor = parseAnyToList(detail.actor ?: detail.cast) ?: movie.actor
                 )
+                
+                // Parse episode data if available
+                parseEpisodeData(response.episodes)
 
                 setupDetailsOverviewRow()
-                setupRelatedMoviesRow()
+                setupDetailsOverviewRow()
+                setupSuggestedRow()
+                setupForYouRow()
                 loadBackgroundImage()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -136,6 +147,46 @@ class DetailsFragment : DetailsSupportFragment() {
                 setupDetailsOverviewRow()
                 loadBackgroundImage()
             }
+        }
+    }
+    
+    private fun parseEpisodeData(episodesData: Any?) {
+        if (episodesData == null) return
+        
+        try {
+            // episodesData can be List<EpisodeServer> or similar structure
+            when (episodesData) {
+                is List<*> -> {
+                    episodeServers = episodesData.mapNotNull { item ->
+                        when (item) {
+                            is com.streamflix.tv.data.model.EpisodeServer -> item
+                            is Map<*, *> -> {
+                                val serverName = item["server_name"] as? String
+                                val serverData = (item["server_data"] as? List<*>)?.mapNotNull { ep ->
+                                    when (ep) {
+                                        is com.streamflix.tv.data.model.EpisodeItem -> ep
+                                        is Map<*, *> -> com.streamflix.tv.data.model.EpisodeItem(
+                                            name = ep["name"] as? String,
+                                            slug = ep["slug"] as? String,
+                                            filename = ep["filename"] as? String,
+                                            link_embed = ep["link_embed"] as? String,
+                                            link_m3u8 = ep["link_m3u8"] as? String
+                                        )
+                                        else -> null
+                                    }
+                                }
+                                com.streamflix.tv.data.model.EpisodeServer(
+                                    server_name = serverName,
+                                    server_data = serverData
+                                )
+                            }
+                            else -> null
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
     }
 
@@ -164,34 +215,89 @@ class DetailsFragment : DetailsSupportFragment() {
         // Add action buttons
         val actionAdapter = ArrayObjectAdapter()
         actionAdapter.add(Action(ACTION_PLAY, getString(R.string.play), null))
+        
+        // Add Episodes button for TV series
+        if (movie.isSeries() || episodeServers.isNotEmpty()) {
+            actionAdapter.add(Action(ACTION_EPISODES, getString(R.string.episodes), null))
+        }
+        
         actionAdapter.add(Action(ACTION_ADD_LIST, getString(R.string.add_to_list), null))
         row.actionsAdapter = actionAdapter
 
         rowsAdapter.add(row)
     }
 
-    private fun setupRelatedMoviesRow() {
-        // Load related movies from same category
+    private fun setupSuggestedRow() {
         lifecycleScope.launch {
             try {
-                val response = withContext(Dispatchers.IO) {
-                    ApiClient.api.getCatalog(category = "phim-le", limit = 15)
+                // Strategy: Try to search by first actor, otherwise fallback to category
+                var results: List<Movie> = emptyList()
+                var headerTitle = getString(R.string.related_movies)
+                
+                // 1. Try Actor Search
+                val actors = movie.actor
+                if (actors != null && actors.isNotEmpty()) {
+                    val firstActor = actors.first()
+                    // Assuming searchMovies returns SearchResponse with movies list
+                     val response = withContext(Dispatchers.IO) {
+                        ApiClient.api.searchMovies(keyword = firstActor, limit = 10)
+                    }
+                    if (response.movies?.isNotEmpty() == true) {
+                        results = response.movies
+                        headerTitle = "More with $firstActor"
+                    }
+                }
+                
+                // 2. Fallback to Category if no actor results
+                if (results.isEmpty()) {
+                    val category = if (movie.isSeries()) "phim-bo" else "phim-le"
+                    val response = withContext(Dispatchers.IO) {
+                        ApiClient.api.getCatalog(category = category, limit = 15)
+                    }
+                    results = response.movies ?: emptyList()
+                    headerTitle = "Suggested Videos"
                 }
 
-                response.movies?.let { relatedMovies ->
-                    if (relatedMovies.isNotEmpty()) {
+                if (results.isNotEmpty()) {
+                    val cardPresenter = CardPresenter()
+                    val listRowAdapter = ArrayObjectAdapter(cardPresenter)
+
+                    results
+                        .filter { it.slug != movie.slug }
+                        .take(10)
+                        .forEach { listRowAdapter.add(it) }
+
+                    if (listRowAdapter.size() > 0) {
+                        val header = HeaderItem(headerTitle)
+                        rowsAdapter.add(ListRow(header, listRowAdapter))
+                    }
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun setupForYouRow() {
+        lifecycleScope.launch {
+            try {
+                // Load Curated Home and pick a section
+                 val response = withContext(Dispatchers.IO) {
+                    ApiClient.api.getHomeCurated()
+                }
+                
+                response.sections?.let { sections ->
+                    // Pick "Phim bộ mới cập nhật" or similar, or just the second section
+                    val forYouSection = sections.firstOrNull { it.title.contains("Hot") || it.title.contains("Top") } ?: sections.getOrNull(1)
+                    
+                    if (forYouSection?.movies?.isNotEmpty() == true) {
                         val cardPresenter = CardPresenter()
                         val listRowAdapter = ArrayObjectAdapter(cardPresenter)
-
-                        relatedMovies
-                            .filter { it.slug != movie.slug }
-                            .take(10)
-                            .forEach { listRowAdapter.add(it) }
-
-                        if (listRowAdapter.size() > 0) {
-                            val header = HeaderItem(getString(R.string.related_movies))
-                            rowsAdapter.add(ListRow(header, listRowAdapter))
-                        }
+                        
+                        forYouSection.movies.take(10).forEach { listRowAdapter.add(it) }
+                        
+                        val header = HeaderItem("For Your Interest")
+                        rowsAdapter.add(ListRow(header, listRowAdapter))
                     }
                 }
             } catch (e: Exception) {
@@ -237,6 +343,19 @@ class DetailsFragment : DetailsSupportFragment() {
             "Removed from My List"
         }
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+    
+    private fun showEpisodes() {
+        if (episodeServers.isEmpty()) {
+            Toast.makeText(requireContext(), "No episodes available", Toast.LENGTH_SHORT).show()
+            return
+        }
+        
+        val intent = Intent(requireContext(), EpisodesActivity::class.java).apply {
+            putExtra(EpisodesActivity.EXTRA_MOVIE, movie)
+            putExtra(EpisodesActivity.EXTRA_EPISODES, ArrayList(episodeServers) as java.io.Serializable)
+        }
+        startActivity(intent)
     }
 
     private fun parseAnyToList(any: Any?): List<String>? {

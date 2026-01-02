@@ -78,7 +78,7 @@ data class MovieDetail(
 data class EpisodeServer(
     val server_name: String? = null,
     val server_data: List<EpisodeItem>? = null
-)
+) : java.io.Serializable
 
 data class EpisodeItem(
     val name: String? = null,
@@ -86,7 +86,7 @@ data class EpisodeItem(
     val filename: String? = null,
     val link_embed: String? = null,
     val link_m3u8: String? = null
-)
+) : java.io.Serializable
 
 data class CategoryItem(
     val id: String? = null,

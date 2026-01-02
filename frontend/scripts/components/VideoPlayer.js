@@ -1,12 +1,62 @@
 /**
  * StreamFlow - Video Player Component
  * ArtPlayer.js integration with custom skin
+ * Includes Screen Wake Lock API to prevent screen sleep during playback
  */
 
 import Artplayer from 'artplayer';
 
 // Player instance reference
 let currentPlayer = null;
+
+// Wake lock instance for preventing screen sleep
+let wakeLock = null;
+
+/**
+ * Request screen wake lock to prevent display from sleeping
+ */
+async function requestWakeLock() {
+    if ('wakeLock' in navigator) {
+        try {
+            wakeLock = await navigator.wakeLock.request('screen');
+            console.log('Wake lock acquired');
+
+            // Handle wake lock release (e.g., when tab loses visibility)
+            wakeLock.addEventListener('release', () => {
+                console.log('Wake lock released');
+            });
+        } catch (err) {
+            console.log('Wake lock request failed:', err.message);
+        }
+    }
+}
+
+/**
+ * Release screen wake lock
+ */
+async function releaseWakeLock() {
+    if (wakeLock !== null) {
+        try {
+            await wakeLock.release();
+            wakeLock = null;
+            console.log('Wake lock released');
+        } catch (err) {
+            console.log('Wake lock release failed:', err.message);
+        }
+    }
+}
+
+/**
+ * Handle visibility change to re-acquire wake lock when tab becomes visible
+ */
+function handleVisibilityChange() {
+    if (document.visibilityState === 'visible' && currentPlayer && !currentPlayer.paused) {
+        requestWakeLock();
+    }
+}
+
+// Register visibility change listener
+document.addEventListener('visibilitychange', handleVisibilityChange);
 
 /**
  * Format duration for display
@@ -195,6 +245,15 @@ export function initPlayer(container, options = {}) {
         console.error('Player error:', error);
     });
 
+    // Wake lock events - keep screen on during playback
+    currentPlayer.on('play', () => {
+        requestWakeLock();
+    });
+
+    currentPlayer.on('pause', () => {
+        releaseWakeLock();
+    });
+
     return currentPlayer;
 }
 
@@ -206,6 +265,8 @@ export function destroyPlayer() {
         currentPlayer.destroy();
         currentPlayer = null;
     }
+    // Release wake lock when player is destroyed
+    releaseWakeLock();
 }
 
 /**

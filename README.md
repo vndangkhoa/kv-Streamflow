@@ -2,17 +2,24 @@
 
 [![Docker Image](https://img.shields.io/docker/v/vndangkhoa/streamflix?label=DockerHub&logo=docker)](https://hub.docker.com/r/vndangkhoa/streamflix)
 [![GitHub](https://img.shields.io/github/v/release/vndangkhoa/Streamflow?label=GitHub&logo=github)](https://github.com/vndangkhoa/Streamflow)
-[![Version](https://img.shields.io/badge/version-1.2.0-blue)](https://github.com/vndangkhoa/Streamflow/releases)
+[![Version](https://img.shields.io/badge/version-1.3.0-blue)](https://github.com/vndangkhoa/Streamflow/releases)
 
 StreamFlow is a high-fidelity movie streaming application designed for NAS enthusiasts and home cinema lovers. It combines a premium **Apple TV+ inspired aesthetic** with a lightweight, high-performance backend, now consolidated into a **single Docker image** for effortless deployment.
 
-## 📋 Latest Release: v1.2.0
+## 📋 Latest Release: v1.3.0
 
-**What's New in v1.2.0:**
+**What's New in v1.3.0:**
+- 🔍 **Search Experience Overhaul:** Fixed UI rendering, added keyboard/voice support, and verified backend connectivity.
+- 🟥 **Solid Red Branding:** Pure solid red adaptive icon and banner for a cleaner TV home screen look.
+- ⚡ **Navigation Polish:** Smarter focus management and sidebar transitions.
+- 🐞 **Stability:** Fixed compilation errors and optimized network requests.
+
+**Previous (v1.2.0):**
 - 🎬 **Animated Splash Screen:** Premium logo animation on app launch
 - 📺 **Continue Watching:** Watch history persisted across sessions
 - ⭐ **My List:** Save favorite movies for quick access
 - ⚡ **Faster Loading:** Optimized splash screen (1.2s) and lazy loading
+- 🐛 **Bug Fixes:** Fixed video playback, improved stability
 - � **Bug Fixes:** Fixed video playback, improved stability
 
 **Previous (v1.1.0):**
@@ -40,9 +47,9 @@ A dedicated native Android TV app built with Google's **Leanback** library for t
 | **My List** | Save favorite movies for quick access |
 
 ### Downloads
-- **[Download TV APK (v1.2.0)](https://github.com/vndangkhoa/Streamflow/releases/download/v1.2.0/StreamFlix-TV.apk)** - Direct Download
-- **[Download Mobile APK (v1.2.0)](https://github.com/vndangkhoa/Streamflow/releases/download/v1.2.0/StreamFlix.apk)** - Direct Download
-- **[All Releases](https://github.com/vndangkhoa/Streamflow/releases/tag/v1.2.0)** - View Release Page
+- **[Download TV APK (v1.3.0)](https://github.com/vndangkhoa/Streamflow/releases/download/v1.3.0/StreamFlix-TV.apk)** - Direct Download
+- **[Download Mobile APK (v1.3.0)](https://github.com/vndangkhoa/Streamflow/releases/download/v1.3.0/StreamFlix.apk)** - Direct Download
+- **[All Releases](https://github.com/vndangkhoa/Streamflow/releases/tag/v1.3.0)** - View Release Page
 
 ### Installation
 

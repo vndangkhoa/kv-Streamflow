@@ -23,7 +23,7 @@ class MainActivity : FragmentActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.main_browse_fragment, MainFragment())
+                .replace(R.id.main_browse_fragment, com.streamflix.tv.ui.home.HomeFragment())
                 .commit()
         }
     }

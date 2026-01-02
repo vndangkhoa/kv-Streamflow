@@ -19,3 +19,22 @@ frontend/.cache/
 # Debug files
 *.png
 debug_*.py
+build_log*.txt
+*.log
+
+# Android TV
+android-tv/.gradle/
+android-tv/app/build/
+android-tv/build/
+android-tv/local.properties
+android-tv/.idea/
+android-tv/.kotlin/
+
+# Build and Release
+release/
+*.apk
+
+# Environment
+.agent/
+.vscode/
+.DS_Store

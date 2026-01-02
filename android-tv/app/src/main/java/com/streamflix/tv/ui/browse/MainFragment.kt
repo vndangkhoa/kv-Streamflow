@@ -103,8 +103,10 @@ class MainFragment : BrowseSupportFragment() {
                     ApiClient.api.getHomeCurated()
                 }
 
-                response.sections?.let { sections ->
-                    populateRows(sections)
+                if (response.sections.isNullOrEmpty()) {
+                    loadFallbackCatalog()
+                } else {
+                    populateRows(response.sections)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -120,19 +122,19 @@ class MainFragment : BrowseSupportFragment() {
                 ApiClient.api.getCatalog(category = "phim-le", limit = 30)
             }
             
-            response.movies?.let { movies ->
-                if (movies.isNotEmpty()) {
-                    rowsAdapter.clear()
-                    val cardPresenter = CardPresenter()
-                    val listRowAdapter = ArrayObjectAdapter(cardPresenter)
-                    movies.forEach { listRowAdapter.add(it) }
-                    val header = HeaderItem(0, "Popular Movies")
-                    rowsAdapter.add(ListRow(header, listRowAdapter))
-                }
+            if (response.movies.isNullOrEmpty()) {
+                if (isAdded) showError()
+            } else {
+                rowsAdapter.clear()
+                val cardPresenter = CardPresenter()
+                val listRowAdapter = ArrayObjectAdapter(cardPresenter)
+                response.movies.forEach { listRowAdapter.add(it) }
+                val header = HeaderItem(0, "Popular Movies")
+                rowsAdapter.add(ListRow(header, listRowAdapter))
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            showError()
+            if (isAdded) showError()
         }
     }
 
@@ -178,6 +180,10 @@ class MainFragment : BrowseSupportFragment() {
                 rowIndex++
             }
         }
+
+        if (rowsAdapter.size() == 0) {
+            showError()
+        }
     }
 
     private fun updateBackground(movie: Movie) {
@@ -209,12 +215,13 @@ class MainFragment : BrowseSupportFragment() {
 
     private fun showError() {
         if (!isAdded) return
+        val ctx = context ?: return
         
         val errorFragment = androidx.leanback.app.ErrorSupportFragment().apply {
-            imageDrawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_error)
-            message = getString(R.string.error_loading)
+            imageDrawable = ContextCompat.getDrawable(ctx, R.drawable.ic_error)
+            message = ctx.getString(R.string.error_loading)
             setDefaultBackground(true)
-            buttonText = getString(R.string.retry)
+            buttonText = ctx.getString(R.string.retry)
             buttonClickListener = View.OnClickListener {
                 parentFragmentManager.popBackStack()
                 loadCategories()
