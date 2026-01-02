@@ -7,7 +7,7 @@
     </item>
     <item
         android:drawable="@drawable/ic_streamflix_logo"
-        android:width="120dp"
+        android:width="200dp"
         android:height="120dp"
         android:gravity="center"/>
 </layer-list>

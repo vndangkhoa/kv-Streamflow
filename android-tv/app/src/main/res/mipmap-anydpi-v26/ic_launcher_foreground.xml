@@ -4,9 +4,11 @@
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    
-    <!-- Empty path or full red path to ensure solid red look -->
+    <!-- Centered YouTube-style Play Button -->
     <path
-        android:fillColor="#E50914"
-        android:pathData="M0,0h108v108z"/>
+        android:pathData="M24,30 L84,30 C94,30 98,34 98,44 L98,64 C98,74 94,78 84,78 L24,78 C14,78 10,74 10,64 L10,44 C10,34 14,30 24,30 Z"
+        android:fillColor="#E50914" />
+    <path
+        android:pathData="M44,42 L44,66 L68,54 Z"
+        android:fillColor="#FFFFFF" />
 </vector>
