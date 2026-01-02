@@ -18,6 +18,7 @@ frontend/.cache/
 
 # Debug files
 *.png
+!**/res/**/*.png
 debug_*.py
 build_log*.txt
 *.log
