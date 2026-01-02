@@ -26,10 +26,10 @@ public class MainActivity extends BridgeActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    public void onDestroy() {
         if (wakeLock != null && wakeLock.isHeld()) {
             wakeLock.release();
         }
+        super.onDestroy();
     }
 }
