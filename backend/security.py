@@ -78,7 +78,7 @@ async def verify_hmac(
         current_time = int(time.time())
         time_diff = abs(current_time - request_time)
         
-        if time_diff > 300:  # 5 minutes
+        if time_diff > 1800:  # 30 minutes - increased for NAS time sync tolerance
             logger.warning(f"Request expired: time_diff={time_diff}s", extra={
                 "path": request.url.path,
                 "request_time": request_time,
