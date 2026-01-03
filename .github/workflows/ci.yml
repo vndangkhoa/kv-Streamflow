@@ -176,6 +176,7 @@ jobs:
         with:
           context: .
           push: false
+          load: true
           tags: streamflix:test
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -184,6 +185,7 @@ jobs:
         run: |
           docker run -d --name test -p 8000:8000 \
             -e STREAMFLIX_DEBUG=true \
+            -e STREAMFLIX_SECRET_KEY=sf_tv_secure_9s8d7f6g5h4j3k2l1 \
             streamflix:test
           sleep 10
           curl -f http://localhost:8000/api/health || exit 1
