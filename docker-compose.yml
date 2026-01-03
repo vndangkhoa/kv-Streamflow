@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # StreamFlow Unified (Backend + Frontend)
   app:
-    image: vndangkhoa/streamflow:latest
+    image: vndangkhoa/streamflix:latest
     platform: linux/amd64
     ports:
       - "3478:8000"

@@ -221,7 +221,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/streamflow:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/streamflow:${{ steps.version.outputs.version }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/streamflix:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/streamflix:${{ steps.version.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
