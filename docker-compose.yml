@@ -10,6 +10,7 @@ services:
     environment:
       - REDIS_URL=redis://redis:6379
       - DATABASE_URL=sqlite:///./data/streamflow.db
+      - STREAMFLIX_SECRET_KEY=sf_tv_secure_9s8d7f6g5h4j3k2l1
       - PYTHONUNBUFFERED=1
     volumes:
       - ./backend/data:/app/data
