@@ -60,7 +60,12 @@ func main() {
 
 	// Static Files (Frontend)
 	workDir, _ := os.Getwd()
-	frontendDir := filepath.Join(workDir, "..", "frontend-react", "dist")
+	frontendDir := filepath.Join(workDir, "dist") // Production (Docker)
+
+	// Check if frontend build exists in local dist, otherwise try dev path
+	if _, err := os.Stat(frontendDir); os.IsNotExist(err) {
+		frontendDir = filepath.Join(workDir, "..", "frontend-react", "dist") // Development
+	}
 
 	// Check if frontend build exists
 	if _, err := os.Stat(frontendDir); os.IsNotExist(err) {
