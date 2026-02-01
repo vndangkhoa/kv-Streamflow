@@ -39,7 +39,7 @@ RUN mkdir -p data
 
 # Environment variables
 ENV PORT=8000
-ENV DATABASE_URL=sqlite:///app/data/streamflow.db
+ENV DATABASE_URL=/app/data/streamflow.db
 ENV GIN_MODE=release
 
 # Expose port
