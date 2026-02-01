@@ -1,73 +1,56 @@
-# StreamFlow Docker Image - Unified Backend + Frontend
-# Multi-stage build for smaller image size
+# ===========================
+# Stage 1: Frontend Build
+# ===========================
+FROM node:20-alpine AS frontend-builder
+WORKDIR /app/frontend
+COPY frontend-react/package*.json ./
+RUN npm ci
+COPY frontend-react/ .
+RUN npm run build
 
-# ====================
-# Stage 1: Dependencies
-# ====================
-FROM python:3.11-slim AS builder
-WORKDIR /build
+# ===========================
+# Stage 2: Backend Build
+# ===========================
+FROM golang:1.22-alpine AS backend-builder
+WORKDIR /app/backend
 
-# Install build dependencies
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    build-essential \
-    && rm -rf /var/lib/apt/lists/*
+# Install necessary build tools for CGO (SQLite)
+RUN apk add --no-cache gcc musl-dev
 
-# Install Python dependencies to wheels
-COPY backend/requirements.txt .
-RUN pip wheel --no-cache-dir --wheel-dir /wheels -r requirements.txt
+COPY backend/go.mod backend/go.sum ./
+RUN go mod download
 
+COPY backend/ .
+# Build Linux binary
+RUN CGO_ENABLED=1 GOOS=linux go build -o server ./cmd/server/main.go
 
-# ====================
-# Stage 2: Runtime
-# ====================
-FROM python:3.11-slim
+# ===========================
+# Stage 3: Runtime
+# ===========================
+FROM python:3.11-alpine
 WORKDIR /app
 
-# Install runtime dependencies only
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    ffmpeg \
-    curl \
-    libnss3 \
-    libnspr4 \
-    libatk1.0-0 \
-    libatk-bridge2.0-0 \
-    libcups2 \
-    libdrm2 \
-    libxkbcommon0 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxrandr2 \
-    libgbm1 \
-    libasound2 \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get clean
+# Install Runtime Dependencies
+# - ffmpeg: for yt-dlp media handling
+# - yt-dlp: via pip
+# - ca-certificates: for HTTPS
+RUN apk add --no-cache ffmpeg ca-certificates && \
+    pip install --no-cache-dir yt-dlp
 
-# Create non-root user for security
-RUN groupadd -r streamflow && useradd -r -g streamflow -d /app -s /sbin/nologin streamflow
+# Create non-root user
+RUN addgroup -S streamflow && adduser -S streamflow -G streamflow
 
-# Install Python dependencies from wheels (faster)
-COPY --from=builder /wheels /wheels
-RUN pip install --no-cache-dir /wheels/* && rm -rf /wheels
+# Copy Frontend Build
+COPY --from=frontend-builder /app/frontend/dist /app/frontend/dist
 
-# Install Playwright browsers (needed for scraping)
-RUN playwright install chromium && playwright install-deps chromium
+# Copy Backend Binary
+COPY --from=backend-builder /app/backend/server /app/server
 
-# Copy backend code
-COPY backend/ .
+# Setup Permissions
+RUN chown -R streamflow:streamflow /app
 
-# Create data directory with correct ownership
-RUN mkdir -p /app/data && chown -R streamflow:streamflow /app
-
-# Switch to non-root user
 USER streamflow
 
-# Expose port
 EXPOSE 8000
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8000/api/health || exit 1
-
-# Start application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
-
+CMD ["/app/server"]

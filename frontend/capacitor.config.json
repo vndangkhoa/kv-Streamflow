@@ -1,9 +1,0 @@
-{
-  "appId": "com.streamflix.app",
-  "appName": "StreamFlix",
-  "webDir": "dist",
-  "server": {
-    "url": "https://nf.khoavo.myds.me",
-    "cleartext": true
-  }
-}

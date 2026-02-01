@@ -1,36 +1,19 @@
 version: '3.8'
 
 services:
-  # StreamFlow Unified (Backend + Frontend)
   app:
-    image: vndangkhoa/streamflix:latest
-    platform: linux/amd64
+    build: .
+    image: streamflow:v2
     ports:
-      - "3478:8000"
+      - "8000:8000"
     environment:
-      - REDIS_URL=redis://redis:6379
       - DATABASE_URL=sqlite:///./data/streamflow.db
-      - STREAMFLIX_SECRET_KEY=sf_tv_secure_9s8d7f6g5h4j3k2l1
-      - PYTHONUNBUFFERED=1
+      - TMDB_API_KEY=${TMDB_API_KEY}
     volumes:
-      - ./backend/data:/app/data
-    depends_on:
-      redis:
-        condition: service_healthy
+      - streamflow_data:/app/data
+      - streamflow_cache:/app/cache
     restart: unless-stopped
 
-  # Redis Cache
-  redis:
-    image: redis:7-alpine
-    platform: linux/amd64
-    ports:
-      - "6379:6379"
-    volumes:
-      - ./redis-data:/data
-    restart: unless-stopped
-    command: redis-server --appendonly yes
-    healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
-      interval: 5s
-      timeout: 3s
-      retries: 5
+volumes:
+  streamflow_data:
+  streamflow_cache:
