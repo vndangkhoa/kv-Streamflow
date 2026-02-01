@@ -106,9 +106,6 @@ const MovieRow = ({ title, category, searchQuery, limit, layout = 'row', movies:
         isDown.current = true;
         startX.current = e.pageX - rowRef.current.offsetLeft;
         scrollLeft.current = rowRef.current.scrollLeft;
-
-        // Capture pointer to track drag even if it leaves the element
-        e.currentTarget.setPointerCapture(e.pointerId);
     };
 
     const handlePointerUp = (e: React.PointerEvent) => {
@@ -117,8 +114,8 @@ const MovieRow = ({ title, category, searchQuery, limit, layout = 'row', movies:
         isDown.current = false;
         if (isDragging) {
             setIsDragging(false);
+            e.currentTarget.releasePointerCapture(e.pointerId);
         }
-        e.currentTarget.releasePointerCapture(e.pointerId);
     };
 
     const handlePointerMove = (e: React.PointerEvent) => {
@@ -129,11 +126,16 @@ const MovieRow = ({ title, category, searchQuery, limit, layout = 'row', movies:
         const walk = (x - startX.current) * 2; // Scroll-fast
 
         // Only trigger dragging state if moved significantly to prevent accidental clicks being blocked
-        if (Math.abs(x - startX.current) > 5 && !isDragging) {
-            setIsDragging(true);
+        if (Math.abs(x - startX.current) > 5) {
+            if (!isDragging) {
+                setIsDragging(true);
+                e.currentTarget.setPointerCapture(e.pointerId);
+            }
         }
 
-        rowRef.current.scrollLeft = scrollLeft.current - walk;
+        if (isDragging) {
+            rowRef.current.scrollLeft = scrollLeft.current - walk;
+        }
     };
 
 
