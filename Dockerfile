@@ -1,56 +1,49 @@
-# ===========================
-# Stage 1: Frontend Build
-# ===========================
-FROM node:20-alpine AS frontend-builder
+# Stage 1: Build Image (Frontend)
+FROM node:18-alpine AS frontend-builder
 WORKDIR /app/frontend
 COPY frontend-react/package*.json ./
-RUN npm ci
+RUN npm install
 COPY frontend-react/ .
 RUN npm run build
 
-# ===========================
-# Stage 2: Backend Build
-# ===========================
-FROM golang:1.22-alpine AS backend-builder
+# Stage 2: Build Image (Backend)
+FROM golang:1.23-alpine AS backend-builder
 WORKDIR /app/backend
-
-# Install necessary build tools for CGO (SQLite)
+# Install build dependencies
 RUN apk add --no-cache gcc musl-dev
 
 COPY backend/go.mod backend/go.sum ./
 RUN go mod download
 
 COPY backend/ .
-# Build Linux binary
-RUN CGO_ENABLED=1 GOOS=linux go build -o server ./cmd/server/main.go
+# Build static binary for Linux amd64
+RUN CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o server cmd/server/main.go
 
-# ===========================
-# Stage 3: Runtime
-# ===========================
-FROM python:3.11-alpine
+# Stage 3: Final Image
+FROM alpine:latest
 WORKDIR /app
 
-# Install Runtime Dependencies
-# - ffmpeg: for yt-dlp media handling
-# - yt-dlp: via pip
-# - ca-certificates: for HTTPS
-RUN apk add --no-cache ffmpeg ca-certificates && \
-    pip install --no-cache-dir yt-dlp
+# Install runtime dependencies (sqlite)
+RUN apk add --no-cache sqlite ca-certificates tzdata
 
-# Create non-root user
-RUN addgroup -S streamflow && adduser -S streamflow -G streamflow
+# Copy backend binary
+COPY --from=backend-builder /app/backend/server .
 
-# Copy Frontend Build
-COPY --from=frontend-builder /app/frontend/dist /app/frontend/dist
+# Copy frontend build to the expected static directory
+# The backend expects ../frontend-react/dist relative to itself, or we configure it.
+# Let's align with the standard deployment structure: /app/server and /app/dist
+COPY --from=frontend-builder /app/frontend/dist ./dist
 
-# Copy Backend Binary
-COPY --from=backend-builder /app/backend/server /app/server
+# Create data directory
+RUN mkdir -p data
 
-# Setup Permissions
-RUN chown -R streamflow:streamflow /app
+# Environment variables
+ENV PORT=8000
+ENV DATABASE_URL=sqlite:///app/data/streamflow.db
+ENV GIN_MODE=release
 
-USER streamflow
-
+# Expose port
 EXPOSE 8000
 
-CMD ["/app/server"]
+# Start server
+CMD ["./server"]

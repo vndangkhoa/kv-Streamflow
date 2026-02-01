@@ -70,17 +70,72 @@ export const useWatchMovie = (slug: string | undefined, episode: string | undefi
                 hls.loadSource(source.stream_url);
                 hls.attachMedia(videoRef.current);
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    videoRef.current?.play();
+                    videoRef.current?.play().catch(() => { });
                 });
                 return () => {
                     hls.destroy();
                 };
             } else if (videoRef.current.canPlayType('application/vnd.apple.mpegurl')) {
                 videoRef.current.src = source.stream_url;
-                videoRef.current.play();
+                videoRef.current.play().catch(() => { });
             }
         }
     }, [source]);
+
+    // Wake Lock Logic (Prevent Screen Sleep)
+    useEffect(() => {
+        const video = videoRef.current;
+        let wakeLock: any = null;
+
+        const requestWakeLock = async () => {
+            try {
+                if ('wakeLock' in navigator) {
+                    wakeLock = await (navigator as any).wakeLock.request('screen');
+                    // console.log('Wake Lock active');
+                }
+            } catch (err) {
+                console.warn('Wake Lock failed:', err);
+            }
+        };
+
+        const releaseWakeLock = async () => {
+            if (wakeLock) {
+                try {
+                    await wakeLock.release();
+                    wakeLock = null;
+                    // console.log('Wake Lock released');
+                } catch (err) {
+                    console.warn('Wake Lock release failed:', err);
+                }
+            }
+        };
+
+        if (video) {
+            const onPlay = () => requestWakeLock();
+            const onPause = () => releaseWakeLock();
+            const onEnded = () => releaseWakeLock();
+
+            video.addEventListener('play', onPlay);
+            video.addEventListener('pause', onPause);
+            video.addEventListener('ended', onEnded);
+
+            // Re-acquire on visibility change if playing
+            const onVisibilityChange = () => {
+                if (document.visibilityState === 'visible' && !video.paused) {
+                    requestWakeLock();
+                }
+            };
+            document.addEventListener('visibilitychange', onVisibilityChange);
+
+            return () => {
+                video.removeEventListener('play', onPlay);
+                video.removeEventListener('pause', onPause);
+                video.removeEventListener('ended', onEnded);
+                document.removeEventListener('visibilitychange', onVisibilityChange);
+                releaseWakeLock();
+            };
+        }
+    }, [source]); // Re-run when source changes (new video loaded)
 
     return {
         movie,

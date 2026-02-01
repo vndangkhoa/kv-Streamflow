@@ -1,18 +1,19 @@
 version: '3.8'
 
 services:
-  app:
+  streamflow:
     build: .
-    image: streamflow:v2
+    image: streamflow:latest
+    container_name: streamflow
+    platform: linux/amd64
     ports:
-      - "8000:8000"
+      - "3478:8000"
     environment:
-      - DATABASE_URL=sqlite:///./data/streamflow.db
+      - DATABASE_URL=sqlite:///app/data/streamflow.db
       - TMDB_API_KEY=${TMDB_API_KEY}
     volumes:
-      - streamflow_data:/app/data
-      - streamflow_cache:/app/cache
-    restart: unless-stopped
+      - ./data:/app/data
+    restart: always
 
 volumes:
   streamflow_data:

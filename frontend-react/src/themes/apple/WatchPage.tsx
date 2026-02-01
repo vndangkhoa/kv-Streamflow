@@ -71,7 +71,8 @@ export const WatchPage = ({ slug, episode }: { slug: string, episode: string }) 
                 </div>
 
                 {/* Content Section - Scrolls over the bottom of the player if sticky, or just below */}
-                <div className="relative z-50 bg-black -mt-4 rounded-t-3xl border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.8)] px-4 md:px-12 py-8 md:py-12 max-w-[1800px] mx-auto w-full space-y-12 min-h-screen">
+                {/* Content Section - Scrolls over the bottom of the player if sticky, or just below */}
+                <div className="relative z-50 bg-black rounded-t-3xl border-t border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.8)] px-4 md:px-12 py-8 md:py-12 max-w-[1800px] mx-auto w-full space-y-12 min-h-screen">
 
                     {/* Movie Info */}
                     <div className="space-y-4">
@@ -93,7 +94,7 @@ export const WatchPage = ({ slug, episode }: { slug: string, episode: string }) 
                             <span className="text-sm text-gray-500">{episodes.length} available</span>
                         </div>
 
-                        <div className="grid grid-cols-5 gap-3">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
                             {(expanded ? episodes : episodes.slice(0, 20)).map((ep) => (
                                 <button
                                     key={ep.number}
